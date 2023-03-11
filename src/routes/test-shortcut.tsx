@@ -2,19 +2,22 @@ import scn from "scn";
 import { createEffect, createSignal } from "solid-js";
 import { TbCheck } from "solid-icons/tb";
 import { onShortcut } from "../tauri";
+import { useNavigate } from "@solidjs/router";
 
 function TestShortcutRoute() {
   const [isConfirmed, setIsConfirmed] = createSignal(false);
-  const [shortcut, setShortcut] = createSignal(
-    localStorage.getItem("shortcut") || ""
-  );
+  const navigate = useNavigate();
 
   onShortcut(() => {
     setIsConfirmed(true);
   });
 
   createEffect(async () => {
-    let shortcutValue = shortcut();
+    if (isConfirmed()) {
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+    }
   });
 
   return (
@@ -35,14 +38,15 @@ function TestShortcutRoute() {
         class={scn(
           "w-max mx-auto flex flex-col items-center gap-2",
           ["hidden", !isConfirmed()],
-          "bg-success/80 backdrop-blur text-textPrimary-dark dark:text-textPrimary-light rounded-lg p-2 text-lg leading-6",
+          "bg-success/80 backdrop-blur text-textPrimary-dark rounded-lg p-2 text-lg leading-6",
           "rounded-full p-4"
         )}
       >
         <span class="bg-current rounded-full p-1">
           <TbCheck stroke-width={3} class="w-6 h-6 stroke-success" />
         </span>
-        Good job! Your shortcut is working.
+        <span>Good job! Your shortcut is working.</span>
+        <span class="text-sm font-normal">navigating to the chat screen.</span>
       </div>
     </div>
   );

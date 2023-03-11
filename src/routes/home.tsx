@@ -14,16 +14,9 @@ const HomeRoute = (props: IHomeRouteProps) => {
     }
   });
 
-  const onSetShortcutClick = () => {
-    localStorage.removeItem("shortcut");
-  };
-
   return (
     <div class={scn("flex flex-col-reverse flex gap-4")}>
       <TextInput />
-      <Link class="hidden" onclick={onSetShortcutClick} href="/shortcut">
-        Setup Shortcut
-      </Link>
     </div>
   );
 };

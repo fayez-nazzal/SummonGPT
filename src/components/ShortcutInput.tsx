@@ -14,10 +14,14 @@ const ShortcutInput = (props: IShortcutInputProp) => {
   const [pressedKeys, setPressedKeys] = createSignal<Set<string>>(new Set());
   const [unsavedShortcut, setUnsavedShortcut] = createSignal(props.shortcut);
   let inputRef: HTMLInputElement | undefined;
-
+  
   onWindowShow(() => {
     inputRef?.focus();
   });
+
+  const onWrapperClick = () => {
+    inputRef?.focus();
+  };
 
   const getKey = (key: string) => {
     return key === " " ? "SPACE" : key.match(/META/i) ? "SUPER" : key;
@@ -54,7 +58,10 @@ const ShortcutInput = (props: IShortcutInputProp) => {
   };
 
   return (
-    <div class="p-4 text-center select-none cursor-default">
+    <div
+      onclick={onWrapperClick}
+      class="p-4 text-center select-none cursor-default"
+    >
       <div class="text-textPrimary font-medium text-lg leading-8">
         Set a keyboard shortcut to quickly summon the chat.
       </div>
@@ -69,7 +76,7 @@ const ShortcutInput = (props: IShortcutInputProp) => {
       >
         Invalid shortcut! Please try again.
       </div>
-      <TextInput
+      <input
         onKeyDown={onKeydown}
         onKeyUp={onKeyup}
         onBlur={onInputBlur}
@@ -77,10 +84,11 @@ const ShortcutInput = (props: IShortcutInputProp) => {
         value={unsavedShortcut()}
         placeholder="..."
         class={scn(
+          "bg-transparent",
           "w-full text-center",
           "focus:text-primary font-bold !text-2xl"
         )}
-        autoFocus
+        autofocus
         readOnly
       />
       <br />

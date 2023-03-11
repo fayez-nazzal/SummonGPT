@@ -29,6 +29,10 @@ export const onShortcut = async (callback: () => void) => {
   listen("shortcut", callback);
 };
 
+export const onSetupShortcut = async (callback: () => void) => {
+  listen("setup_shortcut", callback);
+};
+
 export const invokeShortcut = async () => {
   await invoke("invoke_shortcut");
 };

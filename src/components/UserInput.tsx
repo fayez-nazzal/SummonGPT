@@ -1,5 +1,5 @@
 import scn from "scn";
-import { JSX } from "solid-js";
+import { createEffect, JSX } from "solid-js";
 import TextareaAutosize from "solid-textarea-autosize";
 
 export interface ITextInputProps {
@@ -10,9 +10,12 @@ export interface ITextInputProps {
 export const TextInput = (props: ITextInputProps) => {
   let inputRef: HTMLTextAreaElement | undefined = undefined;
 
+  createEffect(() => {
+    inputRef?.focus();
+  });
+
   const onblur: JSX.EventHandler<HTMLTextAreaElement, FocusEvent> = (e) => {
     e.preventDefault();
-
     inputRef?.focus();
   };
 

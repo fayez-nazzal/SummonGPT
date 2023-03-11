@@ -29,12 +29,14 @@ struct HistoryEventPayload {}
 
 enum Event {
     Shortcut,
+    SetupShortcut
 }
 
 impl Event {
     fn to_string(&self) -> String {
         match self {
             Event::Shortcut => "shortcut".to_string(),
+            Event::SetupShortcut => "setup_shortcut".to_string()
         }
     }
 }

@@ -1,7 +1,7 @@
 let colors = {
   background: {
     light: "#f7fafdaa",
-    dark: "#1b233b80",
+    dark: "#1b233b99",
   },
   textPrimary: {
     light: "#222222",

@@ -1,11 +1,24 @@
 import { createEffect, createSignal } from "solid-js";
 import { ShortcutInput } from "./components/ShortcutInput";
-import { conjureShortcut, hideOnBlur } from "./tauri";
+import {
+  conjureShortcut,
+  hideOnBlur,
+  hideWindow,
+  invokeShortcut,
+  onWindowShow,
+} from "./tauri";
 
 function App() {
   const [shortcut, setShortcut] = createSignal("Control+Shift+I");
   const [isConfirmed, setIsConfirmed] = createSignal(false);
   const [isError, setIsError] = createSignal(false);
+  let containerRef: HTMLDivElement | undefined;
+
+  window.addEventListener("click", (ev) => {
+    if (containerRef && !containerRef.contains(ev.target as Node)) {
+      hideWindow();
+    }
+  });
 
   hideOnBlur();
 
@@ -22,7 +35,7 @@ function App() {
   });
 
   return (
-    <div class="container rounded-xl">
+    <div ref={containerRef} class="container rounded-xl">
       <ShortcutInput
         setShortcut={setShortcut}
         isConfirmed={isConfirmed()}

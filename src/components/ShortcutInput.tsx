@@ -1,5 +1,6 @@
 import scn from "scn";
 import { createSignal, JSX } from "solid-js";
+import { onWindowShow } from "../tauri";
 import { TextInput } from "./TextInput";
 
 export interface IShortcutInputProp {
@@ -17,12 +18,12 @@ export const ShortcutInput = (props: IShortcutInputProp) => {
   const [focused, setFocused] = createSignal<boolean>(false);
   let inputRef: HTMLInputElement | undefined;
 
+  onWindowShow(() => {
+    inputRef?.focus();
+  });
+
   const getKey = (key: string) => {
-    return key === " "
-      ? "SPACE"
-      : key.match(/META/i)
-      ? "SUPER"
-      : key.toUpperCase();
+    return key === " " ? "SPACE" : key.match(/META/i) ? "SUPER" : key;
   };
 
   const onKeydown = (e: any) => {
@@ -66,8 +67,7 @@ export const ShortcutInput = (props: IShortcutInputProp) => {
         Set a keyboard shortcut to quickly summon the chat.
       </div>
       <div class="text-textPrimary text-sm leading-6">
-        Gently press your desired shortcut keys together, and one after the
-        other, lovely!
+        Gently press your desired shortcut keys together, lovely!
       </div>
       <br />
       <TextInput
@@ -76,7 +76,7 @@ export const ShortcutInput = (props: IShortcutInputProp) => {
         value={unsavedShortcut()}
         class={scn(
           "w-full text-center",
-          "focus:text-primary font-bold text-lg"
+          "focus:text-primary font-bold text-2xl"
         )}
         autoFocus
         onFocus={onInputFocus}
@@ -90,13 +90,13 @@ export const ShortcutInput = (props: IShortcutInputProp) => {
         class={scn(
           "bg-primary rounded-lg",
           "hover:brightness-110",
-          "px-2 py-1.5",
-          "font-medium text-textPrimary-dark"
+          "px-3 py-2",
+          "font-medium text-lg text-textPrimary-dark"
         )}
         disabled={!unsavedShortcut}
         onclick={onApply}
       >
-        I've set my talisman
+        Set Shortcut
       </button>
     </div>
   );

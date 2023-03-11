@@ -7,12 +7,22 @@ export const hideWindow = async () => {
 
 export const hideOnBlur = async () => {
   appWindow.listen("tauri://blur", hideWindow);
-  appWindow.listen("tauri://focus", () => invoke("on_shortcut"));
-  appWindow.listen("tauri://move", () => invoke("on_shortcut"));
-  appWindow.listen("tauri://menu", () => invoke("on_shortcut"));
 };
 
 // Passes the shortcut to the rust backend, the rust backed will remove previous shortcuts and register the new one
 export const conjureShortcut = async (shortcut: string) => {
+  shortcut = shortcut.toUpperCase();
   await invoke("register_shortcut", { shortcut });
+};
+
+export const onWindowShow = async (callback: () => void) => {
+  appWindow.onFocusChanged((focused) => {
+    if (focused) {
+      callback();
+    }
+  });
+};
+
+export const invokeShortcut = async () => {
+  await invoke("invoke_shortcut");
 };

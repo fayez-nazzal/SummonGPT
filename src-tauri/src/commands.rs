@@ -89,6 +89,8 @@ pub fn hide_window(handle: tauri::AppHandle) {
     }
 
     app_window.hide().expect("Failed to hide window");
+
+    emit_event(Event::WindowHide, &handle);
 }
 
 #[tauri::command]

@@ -1,10 +1,11 @@
 import scn from "scn";
 import { createEffect, JSX } from "solid-js";
 import TextareaAutosize from "solid-textarea-autosize";
-import { onWindowShow } from "../tauri";
+import { onShortcut, onWindowShow } from "../tauri";
 
 export interface ITextInputProps {
   onSubmit: (value: string) => void;
+  onDismiss: () => void;
 }
 
 const UserInput = (props: ITextInputProps) => {
@@ -15,6 +16,10 @@ const UserInput = (props: ITextInputProps) => {
   });
 
   onWindowShow(() => {
+    inputRef?.focus();
+  });
+
+  onShortcut(() => {
     inputRef?.focus();
   });
 
@@ -33,6 +38,11 @@ const UserInput = (props: ITextInputProps) => {
       e.preventDefault();
       props.onSubmit?.(e.currentTarget.value);
       e.currentTarget.value = "";
+    }
+
+    if (e.key === "Escape") {
+      e.preventDefault();
+      props.onDismiss?.();
     }
   };
 

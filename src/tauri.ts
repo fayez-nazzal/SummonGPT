@@ -25,6 +25,10 @@ export const onWindowShow = async (callback: () => void) => {
   });
 };
 
+export const onWindowHide = async (callback: () => void) => {
+  listen("window_hide", callback);
+};
+
 export const onShortcut = async (callback: () => void) => {
   listen("shortcut", callback);
 };

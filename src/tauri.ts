@@ -20,7 +20,9 @@ export const conjureShortcut = async (shortcut: string) => {
 export const onWindowShow = async (callback: () => void) => {
   appWindow.onFocusChanged((focused) => {
     if (focused) {
-      callback();
+      setTimeout(() => {
+        callback();
+      });
     }
   });
 };
@@ -30,7 +32,9 @@ export const onWindowHide = async (callback: () => void) => {
 };
 
 export const onShortcut = async (callback: () => void) => {
-  listen("shortcut", callback);
+  setTimeout(() => {
+    listen("shortcut", callback);
+  });
 };
 
 export const onSetupShortcut = async (callback: () => void) => {

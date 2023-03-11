@@ -11,21 +11,17 @@ export interface ITextInputProps {
 const UserInput = (props: ITextInputProps) => {
   let inputRef: HTMLTextAreaElement | undefined = undefined;
 
-  createEffect(() => {
+  const focusField = () => {
     inputRef?.focus();
-  });
+  };
 
-  onWindowShow(() => {
-    inputRef?.focus();
-  });
-
-  onShortcut(() => {
-    inputRef?.focus();
-  });
+  createEffect(focusField);
+  onWindowShow(focusField);
+  onShortcut(focusField);
 
   const onblur: JSX.EventHandler<HTMLTextAreaElement, FocusEvent> = (e) => {
     e.preventDefault();
-    inputRef?.focus();
+    focusField();
   };
 
   const onkeydown: JSX.EventHandler<HTMLTextAreaElement, KeyboardEvent> = (

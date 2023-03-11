@@ -1,9 +1,17 @@
-import { Route, Routes } from "@solidjs/router";
+import { Route, Routes, useNavigate } from "@solidjs/router";
 import ShortcutRoute from "./routes/shortcut";
-import { hideWindow } from "./tauri";
+import OpenAIEnvRoute from "./routes/openai";
+import { checkForAPIKey, hideWindow } from "./tauri";
 
 function App() {
   let containerRef: HTMLDivElement | undefined;
+  const navigate = useNavigate();
+
+  checkForAPIKey().then((hasAPIKey) => {
+    if (!hasAPIKey) {
+      navigate("/openai");
+    }
+  });
 
   window.addEventListener("click", (ev) => {
     if (containerRef && !containerRef.contains(ev.target as Node)) {
@@ -15,6 +23,7 @@ function App() {
     <div ref={containerRef} class="container bg-background rounded-xl">
       <Routes>
         <Route path="/" component={ShortcutRoute} />
+        <Route path="/openai" component={OpenAIEnvRoute} />
       </Routes>
     </div>
   );

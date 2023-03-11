@@ -3,6 +3,7 @@
     windows_subsystem = "windows"
 )]
 
+use crate::commands::get_environment_variable;
 use crate::commands::hide_window;
 use crate::commands::println;
 use crate::commands::register_shortcut;
@@ -86,6 +87,7 @@ fn main() {
             register_shortcut,
             unregister_shortcut,
             hide_window,
+            get_environment_variable,
             println
         ])
         .build(tauri::generate_context!())

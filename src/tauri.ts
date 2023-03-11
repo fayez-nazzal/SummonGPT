@@ -46,3 +46,11 @@ export const setAppTheme = () => {
 export const println = (message: string) => {
   invoke("println", { message });
 };
+
+export const checkForAPIKey = async () => {
+  const hasAPIKey = !!(await invoke("get_environment_variable", {
+    name: "OPENAI_API_KEY",
+  }));
+
+  return hasAPIKey;
+};

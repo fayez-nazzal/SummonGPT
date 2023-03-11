@@ -90,3 +90,8 @@ pub fn hide_window(handle: tauri::AppHandle) {
 
     app_window.hide().expect("Failed to hide window");
 }
+
+#[tauri::command]
+pub fn get_environment_variable (name: &str) -> String {
+  std::env::var(name).unwrap_or_else(|_| "".to_string())
+}

@@ -11,18 +11,21 @@
     "version": "1.0.0"
   },
   "tauri": {
+    "systemTray": {
+      "iconPath": "icons/icon.png"
+    },
     "allowlist": {
       "globalShortcut": {
         "all": true
       },
       "window": {
-        "center": false,
-        "hide": false,
-        "minimize": false,
-        "setAlwaysOnTop": false,
-        "setFocus": false,
-        "show": false,
-        "unminimize": false
+        "center": true,
+        "hide": true,
+        "minimize": true,
+        "setAlwaysOnTop": true,
+        "setFocus": true,
+        "show": true,
+        "unminimize": true
       }
     },
     "bundle": {
@@ -52,7 +55,8 @@
         "decorations": true,
         "alwaysOnTop": true,
         "transparent": true,
-        "resizable": false
+        "resizable": false,
+        "center": true
       }
     ],
     "macOSPrivateApi": true

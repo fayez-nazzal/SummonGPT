@@ -13,9 +13,10 @@ edition = "2021"
 tauri-build = { version = "1.2", features = [] }
 
 [dependencies]
-tauri = { version = "1.2", features = ["global-shortcut-all", "macos-private-api"] }
+tauri = { version = "1.2", features = ["global-shortcut-all", "macos-private-api", "system-tray", "window-center", "window-hide", "window-minimize", "window-set-always-on-top", "window-set-focus", "window-show", "window-unminimize"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+auto-launch = "0.4.0"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem

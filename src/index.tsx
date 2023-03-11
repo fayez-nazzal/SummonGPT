@@ -5,6 +5,9 @@ import "./index.css";
 import "./et-book.css";
 import App from "./App";
 import { Router } from "@solidjs/router";
+import { setAppTheme } from "./tauri";
+
+setAppTheme();
 
 render(
   () => (

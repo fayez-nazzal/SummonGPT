@@ -1,4 +1,8 @@
 let colors = {
+  background: {
+    light: "#ffffff80",
+    dark: "#1b233b80",
+  },
   textPrimary: {
     light: "#222222",
     dark: "#ffffff",

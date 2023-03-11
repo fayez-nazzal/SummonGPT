@@ -6,13 +6,6 @@ function ShortcutRoute() {
   const [shortcut, setShortcut] = createSignal("Control+Shift+I");
   const [isConfirmed, setIsConfirmed] = createSignal(false);
   const [isError, setIsError] = createSignal(false);
-  let containerRef: HTMLDivElement | undefined;
-
-  window.addEventListener("click", (ev) => {
-    if (containerRef && !containerRef.contains(ev.target as Node)) {
-      hideWindow();
-    }
-  });
 
   createEffect(async () => {
     if (!isConfirmed()) setIsError(true);
@@ -27,15 +20,13 @@ function ShortcutRoute() {
   });
 
   return (
-    <div ref={containerRef} class="container rounded-xl">
-      <ShortcutInput
-        setShortcut={setShortcut}
-        isConfirmed={isConfirmed()}
-        setIsConfirmed={setIsConfirmed}
-        shortcut={shortcut()}
-        isError={isError()}
-      />
-    </div>
+    <ShortcutInput
+      setShortcut={setShortcut}
+      isConfirmed={isConfirmed()}
+      setIsConfirmed={setIsConfirmed}
+      shortcut={shortcut()}
+      isError={isError()}
+    />
   );
 }
 

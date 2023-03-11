@@ -2,7 +2,14 @@ import { useNavigate } from "@solidjs/router";
 import scn from "scn";
 import { createSignal, lazy } from "solid-js";
 import Bobble from "../components/Bobble";
-import { hideWindowOnBlur, hideWindow, onSetupShortcut } from "../tauri";
+import { openAiCompletion } from "../openai";
+import {
+  hideWindowOnBlur,
+  hideWindow,
+  onSetupShortcut,
+  println,
+  getOpenAIAPIKey,
+} from "../tauri";
 import { EBobbleType, IBobble } from "../types";
 const UserInput = lazy(() => import("../components/UserInput"));
 
@@ -32,7 +39,7 @@ const HomeRoute = (props: IHomeRouteProps) => {
     navigate("/shortcut");
   });
 
-  const onUserInputSubmit = (value: string) => {
+  const onUserInputSubmit = async (value: string) => {
     setBobbles((bobbles) => [
       ...bobbles,
       {
@@ -40,6 +47,29 @@ const HomeRoute = (props: IHomeRouteProps) => {
         content: value,
       },
     ]);
+
+    let bobblesWithAssistant: IBobble[] | undefined = undefined;
+
+    await openAiCompletion(
+      bobbles(),
+      (text) => {
+        const newBobble: IBobble = {
+          role: EBobbleType.Assistant,
+          content: text,
+        };
+
+        if (!bobblesWithAssistant) {
+          bobblesWithAssistant = [...bobbles(), newBobble];
+        } else {
+          bobblesWithAssistant[bobblesWithAssistant.length - 1] = {
+            ...newBobble,
+          };
+        }
+
+        setBobbles(() => [...bobblesWithAssistant!]);
+      },
+      await getOpenAIAPIKey()
+    );
   };
 
   return (

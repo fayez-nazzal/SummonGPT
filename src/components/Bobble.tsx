@@ -1,22 +1,34 @@
 import { EBobbleType, IBobble } from "../types";
-import { FaSolidHatWizard } from "solid-icons/fa";
 import scn from "scn";
+import { createEffect } from "solid-js";
+import { getIconForBobbleType } from "../utils";
 
 interface IBobbleProps {
   bobble: IBobble;
 }
 
 const Bobble = (props: IBobbleProps) => {
-  const Icon =
-    props.bobble.role === EBobbleType.User
-      ? FaSolidHatWizard
-      : FaSolidHatWizard;
+  let wrapperRef: HTMLDivElement | undefined = undefined;
+
+  createEffect(() => {
+    if (wrapperRef) {
+      wrapperRef.scrollIntoView({ behavior: "smooth" });
+    }
+  });
+
+  const Icon = getIconForBobbleType(props.bobble.role);
 
   return (
-    <div class="flex gap-2 items-center">
+    <div
+      ref={wrapperRef}
+      class={scn("flex gap-2 items-center", [
+        "flex-row-reverse",
+        props.bobble.role === EBobbleType.Assistant,
+      ])}
+    >
       <div
         class={scn(
-          "max-w-32",
+          "max-w-[580px]",
           ["bg-primary", props.bobble.role === EBobbleType.Assistant],
           [
             "bg-background-dark/20 dark:bg-background-light/20 ml-auto",
@@ -28,7 +40,12 @@ const Bobble = (props: IBobbleProps) => {
       >
         {props.bobble.content}
       </div>
-      <div class="bg-[#af85ff] flex justify-center items-center rounded-lg w-8 h-8 text-textPrimary">
+      <div
+        class={scn(
+          "flex justify-center items-center rounded-lg w-8 h-8 text-textPrimary-dark dark:text-textPrimary-light",
+          ["bg-textPrimary", props.bobble.role === EBobbleType.User]
+        )}
+      >
         <Icon />
       </div>
     </div>

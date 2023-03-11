@@ -33,11 +33,13 @@ export const getChatGPTReply = async (
 
   const text = response.data.choices[0].message?.content;
 
+  text?.replace(/\\n/g, "\n");
+
   if (!text) return;
 
   for (let i = 0; i < text.length; i++) {
     setTimeout(() => {
       onStream(text.slice(0, i));
-    }, 54 * i);
+    }, 48 * i);
   }
 };

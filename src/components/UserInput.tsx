@@ -12,7 +12,9 @@ const UserInput = (props: ITextInputProps) => {
   let inputRef: HTMLTextAreaElement | undefined = undefined;
 
   const focusField = () => {
-    inputRef?.focus();
+    setTimeout(() => {
+      inputRef?.focus();
+    }, 100);
   };
 
   createEffect(focusField);
@@ -50,7 +52,7 @@ const UserInput = (props: ITextInputProps) => {
         "bg-plane text-textPrimary placeholder:textPrimary/80",
         "text-md",
         "resize-none",
-        "border border-melt/20",
+        "border border-melt/40",
         "rounded-lg cursor-text p-4 focus:outline-none "
       )}
       autofocus

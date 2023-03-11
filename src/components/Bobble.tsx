@@ -12,7 +12,7 @@ const Bobble = (props: IBobbleProps) => {
 
   createEffect(() => {
     if (wrapperRef) {
-      wrapperRef.scrollIntoView({ behavior: "smooth" });
+      wrapperRef.scrollIntoView({ behavior: "smooth", block: "end" });
     }
   });
 
@@ -35,7 +35,8 @@ const Bobble = (props: IBobbleProps) => {
             props.bobble.role === EBobbleType.User,
           ],
           "rounded-lg py-2 px-3",
-          "text-textPrimary font-normal txt-md"
+          "text-textPrimary font-normal txt-md",
+          "whitespace-pre-line"
         )}
       >
         {props.bobble.content}

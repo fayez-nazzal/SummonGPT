@@ -7,10 +7,7 @@ export const getIconForBobbleType = (type: EBobbleType) =>
     : () => (
         <>
           <div class="w-[30px] h-[30px] flex flex-col relative items-end">
-            <div
-              class="relative h-[30px] w-[30px] p-1 rounded-sm text-white flex items-center justify-center"
-              style="background-color: rgb(16, 163, 127);"
-            >
+            <div class="relative h-[30px] w-[30px] p-1 rounded-sm text-white flex items-center justify-center bg-primary">
               <svg
                 width="41"
                 height="41"

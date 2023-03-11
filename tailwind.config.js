@@ -27,6 +27,10 @@ let colors = {
     light: "#63c132",
     dark: "#0cce6b",
   },
+  plane: {
+    light: "#f2f2f2",
+    dark: "#1b233b",
+  },
 };
 
 /** @type {import('tailwindcss').Config} */

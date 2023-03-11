@@ -16,6 +16,7 @@
     "scn": "^1.0.19",
     "solid-icons": "^1.0.4",
     "solid-js": "^1.4.7",
+    "solid-textarea-autosize": "^0.0.5",
     "tailwindcss-theme-shift": "^2.0.5"
   },
   "devDependencies": {

@@ -1,4 +1,6 @@
 import scn from "scn";
+import { JSX } from "solid-js";
+import TextareaAutosize from "solid-textarea-autosize";
 
 export interface ITextInputProps {
   class?: string;
@@ -6,16 +8,31 @@ export interface ITextInputProps {
 }
 
 export const TextInput = (props: ITextInputProps) => {
+  let inputRef: HTMLTextAreaElement | undefined = undefined;
+
+  const onblur: JSX.EventHandler<HTMLTextAreaElement, FocusEvent> = (e) => {
+    e.preventDefault();
+
+    inputRef?.focus();
+  };
+
   return (
-    <input
-      type="text"
+    <TextareaAutosize
+      ref={inputRef}
       {...props}
+      placeholder="Write your message here, press enter to send."
       class={scn(
-        "bg-transparent",
-        "text-sm",
-        "rounded-lg py-1 px-1.5 focus:outline-none ",
+        "bg-plane text-textPrimary placeholder:textPrimary/80",
+        "text-md",
+        "resize-none",
+        "border border-melt/20",
+        "rounded-lg cursor-text p-4 focus:outline-none ",
         props.class
       )}
+      autofocus
+      onblur={onblur}
+      minRows={1}
+      maxRows={10}
     />
   );
 };

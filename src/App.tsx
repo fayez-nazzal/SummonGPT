@@ -3,6 +3,7 @@ import ShortcutRoute from "./routes/shortcut";
 import TestShortcutRoute from "./routes/test-shortcut";
 import OpenAIEnvRoute from "./routes/openai";
 import { checkForAPIKey, hideWindow } from "./tauri";
+import HomeRoute from "./routes/home";
 
 function App() {
   let containerRef: HTMLDivElement | undefined;
@@ -14,19 +15,19 @@ function App() {
     }
   });
 
-  window.addEventListener("click", (ev) => {
-    if (containerRef && !containerRef.contains(ev.target as Node)) {
-      hideWindow();
-    }
-  });
-
   return (
     <div class="p-2 h-max">
       <div ref={containerRef} class="container shadow bg-background rounded-xl">
         <Routes>
-          <Route path="/" component={ShortcutRoute} />
+          <Route path="/shortcut" component={ShortcutRoute} />
           <Route path="/openai" component={OpenAIEnvRoute} />
           <Route path="/test-shortcut" component={TestShortcutRoute} />
+          <Route
+            path="/"
+            component={(props) => (
+              <HomeRoute {...props} containerRef={containerRef} />
+            )}
+          />
         </Routes>
       </div>
     </div>

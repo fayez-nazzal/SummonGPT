@@ -1,6 +1,7 @@
 import scn from "scn";
 import { createEffect, JSX } from "solid-js";
 import TextareaAutosize from "solid-textarea-autosize";
+import { onWindowShow } from "../tauri";
 
 export interface ITextInputProps {
   onSubmit: (value: string) => void;
@@ -10,6 +11,10 @@ const UserInput = (props: ITextInputProps) => {
   let inputRef: HTMLTextAreaElement | undefined = undefined;
 
   createEffect(() => {
+    inputRef?.focus();
+  });
+
+  onWindowShow(() => {
     inputRef?.focus();
   });
 

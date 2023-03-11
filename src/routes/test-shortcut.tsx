@@ -10,6 +10,7 @@ function TestShortcutRoute() {
 
   onShortcut(() => {
     setIsConfirmed(true);
+    localStorage.setItem("shortcut-tested", "true");
   });
 
   createEffect(async () => {

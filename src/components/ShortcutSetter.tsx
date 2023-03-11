@@ -1,7 +1,6 @@
 import scn from "scn";
-import { createSignal, JSX } from "solid-js";
+import { createEffect, createSignal, JSX } from "solid-js";
 import { onWindowShow } from "../tauri";
-import { TextInput } from "./UserInput";
 
 export interface IShortcutInputProp {
   shortcut: string;
@@ -14,6 +13,10 @@ const ShortcutSetter = (props: IShortcutInputProp) => {
   const [pressedKeys, setPressedKeys] = createSignal<Set<string>>(new Set());
   const [unsavedShortcut, setUnsavedShortcut] = createSignal(props.shortcut);
   let inputRef: HTMLInputElement | undefined;
+
+  createEffect(() => {
+    inputRef?.focus();
+  });
 
   onWindowShow(() => {
     inputRef?.focus();

@@ -4,11 +4,11 @@ const ShortcutInput = lazy(() => import("../components/ShortcutSetter"));
 import { conjureShortcut } from "../tauri";
 
 function ShortcutRoute() {
+  const navigate = useNavigate();
   const [shortcut, setShortcut] = createSignal(
     localStorage.getItem("shortcut") || ""
   );
   const [isError, setIsError] = createSignal(false);
-  const navigate = useNavigate();
 
   createEffect(async () => {
     let shortcutValue = shortcut();

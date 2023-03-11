@@ -10,6 +10,7 @@ use auto_launch::*;
 use serde::ser::StdError;
 use state::init_state;
 use state::AppState;
+use tauri::ActivationPolicy;
 use std::env::current_exe;
 use tauri::App;
 use tauri::AppHandle;
@@ -43,6 +44,8 @@ fn emit_event(event: Event, handle: &AppHandle) {
 }
 
 fn setup(app: &mut App) -> std::result::Result<(), Box<(dyn StdError + 'static)>> {
+    app.set_activation_policy(ActivationPolicy::Accessory);
+
     let handle = app.handle();
 
     let app_name = &app.package_info().name;

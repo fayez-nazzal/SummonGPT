@@ -2,13 +2,12 @@ import { useNavigate } from "@solidjs/router";
 import scn from "scn";
 import { createSignal, lazy } from "solid-js";
 import Bobble from "../components/Bobble";
-import { openAiCompletion } from "../openai";
+import { getChatGPTReply } from "../openai";
 import {
   hideWindowOnBlur,
   hideWindow,
   onSetupShortcut,
-  println,
-  getOpenAIAPIKey,
+  onWindowHide,
 } from "../tauri";
 import { EBobbleType, IBobble } from "../types";
 const UserInput = lazy(() => import("../components/UserInput"));
@@ -34,6 +33,10 @@ const HomeRoute = (props: IHomeRouteProps) => {
 
   hideWindowOnBlur();
 
+  onWindowHide(() => {
+    setBobbles(() => []);
+  });
+
   onSetupShortcut(() => {
     localStorage.removeItem("shortcut");
     navigate("/shortcut");
@@ -50,26 +53,22 @@ const HomeRoute = (props: IHomeRouteProps) => {
 
     let bobblesWithAssistant: IBobble[] | undefined = undefined;
 
-    await openAiCompletion(
-      bobbles(),
-      (text) => {
-        const newBobble: IBobble = {
-          role: EBobbleType.Assistant,
-          content: text,
+    await getChatGPTReply(bobbles(), (text) => {
+      const newBobble: IBobble = {
+        role: EBobbleType.Assistant,
+        content: text,
+      };
+
+      if (!bobblesWithAssistant) {
+        bobblesWithAssistant = [...bobbles(), newBobble];
+      } else {
+        bobblesWithAssistant[bobblesWithAssistant.length - 1] = {
+          ...newBobble,
         };
+      }
 
-        if (!bobblesWithAssistant) {
-          bobblesWithAssistant = [...bobbles(), newBobble];
-        } else {
-          bobblesWithAssistant[bobblesWithAssistant.length - 1] = {
-            ...newBobble,
-          };
-        }
-
-        setBobbles(() => [...bobblesWithAssistant!]);
-      },
-      await getOpenAIAPIKey()
-    );
+      setBobbles(() => [...bobblesWithAssistant!]);
+    });
   };
 
   return (
@@ -84,7 +83,7 @@ const HomeRoute = (props: IHomeRouteProps) => {
           <Bobble bobble={bobble} />
         ))}
       </div>
-      <UserInput onSubmit={onUserInputSubmit} />
+      <UserInput onSubmit={onUserInputSubmit} onDismiss={hideWindow} />
     </div>
   );
 };

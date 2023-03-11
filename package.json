@@ -12,7 +12,9 @@
   "license": "MIT",
   "dependencies": {
     "@tauri-apps/api": "^1.2.0",
-    "solid-js": "^1.4.7"
+    "scn": "^1.0.19",
+    "solid-js": "^1.4.7",
+    "tailwindcss-theme-shift": "^2.0.5"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.2.2",

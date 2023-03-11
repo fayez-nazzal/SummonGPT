@@ -52,7 +52,7 @@
         "title": "SummonGPT",
         "width": 600,
         "height": 600,
-        "decorations": true,
+        "decorations": false,
         "alwaysOnTop": true,
         "transparent": true,
         "resizable": false,

@@ -1,7 +1,7 @@
 import scn from "scn";
 import { createSignal, JSX } from "solid-js";
 import { onWindowShow } from "../tauri";
-import { TextInput } from "./TextInput";
+import { TextInput } from "./UserInput";
 
 export interface IShortcutInputProp {
   shortcut: string;

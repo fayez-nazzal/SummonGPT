@@ -1,6 +1,6 @@
 import { Link } from "@solidjs/router";
 import scn from "scn";
-import { TextInput } from "../components/TextInput";
+import { TextInput } from "../components/UserInput";
 import { hideWindow } from "../tauri";
 
 interface IHomeRouteProps {

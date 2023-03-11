@@ -12,10 +12,9 @@ export interface IShortcutInputProp {
   class?: string;
 }
 
-export const ShortcutInput = (props: IShortcutInputProp) => {
+const ShortcutInput = (props: IShortcutInputProp) => {
   const [pressedKeys, setPressedKeys] = createSignal<Set<string>>(new Set());
   const [unsavedShortcut, setUnsavedShortcut] = createSignal(props.shortcut);
-  const [focused, setFocused] = createSignal<boolean>(false);
   let inputRef: HTMLInputElement | undefined;
 
   onWindowShow(() => {
@@ -48,10 +47,6 @@ export const ShortcutInput = (props: IShortcutInputProp) => {
     e.preventDefault();
   };
 
-  const onInputFocus = () => {
-    setFocused(true);
-  };
-
   const onInputBlur: JSX.EventHandler<HTMLInputElement, FocusEvent> = (e) => {
     inputRef?.focus();
     e.preventDefault();
@@ -73,15 +68,14 @@ export const ShortcutInput = (props: IShortcutInputProp) => {
       <TextInput
         onKeyDown={onKeydown}
         onKeyUp={onKeyup}
+        onBlur={onInputBlur}
+        ref={inputRef}
         value={unsavedShortcut()}
         class={scn(
           "w-full text-center",
-          "focus:text-primary font-bold text-2xl"
+          "focus:text-primary font-bold !text-2xl"
         )}
         autoFocus
-        onFocus={onInputFocus}
-        onBlur={onInputBlur}
-        ref={inputRef}
         readOnly
       />
       <br />
@@ -101,3 +95,5 @@ export const ShortcutInput = (props: IShortcutInputProp) => {
     </div>
   );
 };
+
+export default ShortcutInput;

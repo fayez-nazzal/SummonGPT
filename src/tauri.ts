@@ -6,7 +6,7 @@ export const hideWindow = async () => {
   await invoke("hide_window");
 };
 
-export const hideOnBlur = async () => {
+export const hideWindowOnBlur = async () => {
   appWindow.listen("tauri://blur", hideWindow);
 };
 

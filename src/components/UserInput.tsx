@@ -3,8 +3,7 @@ import { createEffect, JSX } from "solid-js";
 import TextareaAutosize from "solid-textarea-autosize";
 
 export interface ITextInputProps {
-  class?: string;
-  onSubmit?: (value: string) => void;
+  onSubmit: (value: string) => void;
 }
 
 const UserInput = (props: ITextInputProps) => {
@@ -22,6 +21,9 @@ const UserInput = (props: ITextInputProps) => {
   const onkeydown: JSX.EventHandler<HTMLTextAreaElement, KeyboardEvent> = (
     e
   ) => {
+    // if shift is pressed, do not submit
+    if (e.shiftKey) return;
+
     if (e.key === "Enter" && e.currentTarget.value) {
       e.preventDefault();
       props.onSubmit?.(e.currentTarget.value);
@@ -38,13 +40,13 @@ const UserInput = (props: ITextInputProps) => {
         "text-md",
         "resize-none",
         "border border-melt/20",
-        "rounded-lg cursor-text p-4 focus:outline-none ",
-        props.class
+        "rounded-lg cursor-text p-4 focus:outline-none "
       )}
       autofocus
       onblur={onblur}
+      onkeydown={onkeydown}
       minRows={1}
-      maxRows={10}
+      maxRows={5}
     />
   );
 };

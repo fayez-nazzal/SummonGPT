@@ -1,8 +1,7 @@
 use crate::{emit_event, state::AppState, Event};
 use tauri::{GlobalShortcutManager, Manager};
 
-#[tauri::command(async)]
-fn on_shortcut(handle: tauri::AppHandle) {
+pub fn on_shortcut(handle: tauri::AppHandle) {
     println!("Shortcut pressed");
 
     let app_window = handle.get_window("main").unwrap();

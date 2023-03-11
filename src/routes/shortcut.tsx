@@ -1,29 +1,33 @@
 import { createEffect, createSignal, lazy } from "solid-js";
 const ShortcutInput = lazy(() => import("../components/ShortcutInput"));
-import { conjureShortcut, hideWindow } from "../tauri";
+import { conjureShortcut } from "../tauri";
 
 function ShortcutRoute() {
-  const [shortcut, setShortcut] = createSignal("Control+Shift+I");
-  const [isConfirmed, setIsConfirmed] = createSignal(false);
+  const [shortcut, setShortcut] = createSignal(
+    localStorage.getItem("shortcut") || ""
+  );
   const [isError, setIsError] = createSignal(false);
 
   createEffect(async () => {
-    if (!isConfirmed()) setIsError(true);
-    if (shortcut()) {
-      try {
-        await conjureShortcut(shortcut());
-      } catch {
-        console.log("Error");
-        setIsError(true);
-      }
+    let shortcutValue = shortcut();
+
+    if (
+      shortcutValue &&
+      ["control", "super", "shift", "alt"].includes(
+        shortcutValue.toLowerCase().split("+")[0]
+      )
+    ) {
+      let result = await conjureShortcut(shortcut());
+      setIsError(!result);
+      result && localStorage.setItem("shortcut", shortcutValue);
+    } else if (shortcutValue) {
+      setIsError(true);
     }
   });
 
   return (
     <ShortcutInput
       setShortcut={setShortcut}
-      isConfirmed={isConfirmed()}
-      setIsConfirmed={setIsConfirmed}
       shortcut={shortcut()}
       isError={isError()}
     />

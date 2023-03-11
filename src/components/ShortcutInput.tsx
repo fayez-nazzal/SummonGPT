@@ -4,8 +4,6 @@ import { onWindowShow } from "../tauri";
 import { TextInput } from "./TextInput";
 
 export interface IShortcutInputProp {
-  isConfirmed: boolean;
-  setIsConfirmed: (value: boolean) => void;
   shortcut: string;
   setShortcut: (value: string) => void;
   isError: boolean;
@@ -38,7 +36,6 @@ const ShortcutInput = (props: IShortcutInputProp) => {
     newPressedKeys.add(getKey(key));
     setPressedKeys(newPressedKeys);
     setUnsavedShortcut(Array.from(pressedKeys()).join("+"));
-    props.setIsConfirmed(newPressedKeys.size > 1);
     e.preventDefault();
   };
 
@@ -64,13 +61,21 @@ const ShortcutInput = (props: IShortcutInputProp) => {
       <div class="text-textPrimary text-sm leading-6">
         Gently press your desired shortcut keys together, lovely!
       </div>
-      <br />
+      <div
+        class={scn("text-md font-medium text-error", [
+          "invisible opacity-0",
+          !props.isError,
+        ])}
+      >
+        Invalid shortcut! Please try again.
+      </div>
       <TextInput
         onKeyDown={onKeydown}
         onKeyUp={onKeyup}
         onBlur={onInputBlur}
         ref={inputRef}
         value={unsavedShortcut()}
+        placeholder="..."
         class={scn(
           "w-full text-center",
           "focus:text-primary font-bold !text-2xl"

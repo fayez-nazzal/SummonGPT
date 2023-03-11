@@ -4,6 +4,7 @@
 )]
 
 use crate::commands::hide_window;
+use crate::commands::println;
 use crate::commands::register_shortcut;
 use crate::commands::unregister_shortcut;
 use auto_launch::*;
@@ -84,7 +85,8 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             register_shortcut,
             unregister_shortcut,
-            hide_window
+            hide_window,
+            println
         ])
         .build(tauri::generate_context!())
         .expect("error while building tauri application")

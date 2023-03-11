@@ -26,7 +26,12 @@ pub fn on_shortcut(handle: tauri::AppHandle) {
 }
 
 #[tauri::command(async)]
-pub fn register_shortcut(shortcut: &str, handle: tauri::AppHandle) -> Result<(), ()> {
+pub fn println(message: String) {
+    println!("{}", message);
+}
+
+#[tauri::command(async)]
+pub fn register_shortcut(shortcut: &str, handle: tauri::AppHandle) -> bool {
     let mut global_shortcut_manager = handle.global_shortcut_manager();
     let handle_clone = handle.clone();
     let state = handle_clone.state::<AppState>();
@@ -49,10 +54,10 @@ pub fn register_shortcut(shortcut: &str, handle: tauri::AppHandle) -> Result<(),
 
     if result.is_ok() {
         app_state.shortcut = Some(shortcut.to_string());
-        Ok(())
+        return true;
     } else {
         eprintln!("Error registering shortcut: {}", result.err().unwrap());
-        Err(())
+        return false;
     }
 }
 

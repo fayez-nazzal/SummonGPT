@@ -12,7 +12,8 @@ export const hideOnBlur = async () => {
 // Passes the shortcut to the rust backend, the rust backed will remove previous shortcuts and register the new one
 export const conjureShortcut = async (shortcut: string) => {
   shortcut = shortcut.toUpperCase();
-  await invoke("register_shortcut", { shortcut });
+
+  return await invoke("register_shortcut", { shortcut });
 };
 
 export const onWindowShow = async (callback: () => void) => {
@@ -40,4 +41,8 @@ export const setAppTheme = () => {
     document.body.classList.add("light");
     document.body.classList.remove("dark");
   }
+};
+
+export const println = (message: string) => {
+  invoke("println", { message });
 };

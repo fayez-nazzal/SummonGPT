@@ -19,6 +19,10 @@ let colors = {
     light: "#c0c0c0",
     dark: "#ebebeb",
   },
+  error: {
+    light: "#f33800",
+    dark: "#f24073",
+  },
 };
 
 /** @type {import('tailwindcss').Config} */

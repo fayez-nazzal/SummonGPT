@@ -1,6 +1,6 @@
 import { useNavigate } from "@solidjs/router";
 import { createEffect, createSignal, lazy } from "solid-js";
-const ShortcutInput = lazy(() => import("../components/ShortcutInput"));
+const ShortcutInput = lazy(() => import("../components/ShortcutSetter"));
 import { conjureShortcut } from "../tauri";
 
 function ShortcutRoute() {

@@ -10,11 +10,11 @@ export interface IShortcutInputProp {
   class?: string;
 }
 
-const ShortcutInput = (props: IShortcutInputProp) => {
+const ShortcutSetter = (props: IShortcutInputProp) => {
   const [pressedKeys, setPressedKeys] = createSignal<Set<string>>(new Set());
   const [unsavedShortcut, setUnsavedShortcut] = createSignal(props.shortcut);
   let inputRef: HTMLInputElement | undefined;
-  
+
   onWindowShow(() => {
     inputRef?.focus();
   });
@@ -69,10 +69,11 @@ const ShortcutInput = (props: IShortcutInputProp) => {
         Gently press your desired shortcut keys together, lovely!
       </div>
       <div
-        class={scn("text-md font-medium text-error", [
-          "invisible opacity-0",
-          !props.isError,
-        ])}
+        class={scn(
+          "text-md font-medium text-error",
+          ["invisible opacity-0", !props.isError],
+          "leading-[2rem]"
+        )}
       >
         Invalid shortcut! Please try again.
       </div>
@@ -96,11 +97,11 @@ const ShortcutInput = (props: IShortcutInputProp) => {
       <button
         class={scn(
           "bg-primary rounded-lg",
-          "hover:brightness-110",
+          "disabled:grayscale enabled:hover:brightness-110",
           "px-3 py-2",
           "font-medium text-lg text-textPrimary-dark"
         )}
-        disabled={!unsavedShortcut}
+        disabled={!unsavedShortcut()}
         onclick={onApply}
       >
         Set Shortcut
@@ -109,4 +110,4 @@ const ShortcutInput = (props: IShortcutInputProp) => {
   );
 };
 
-export default ShortcutInput;
+export default ShortcutSetter;

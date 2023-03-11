@@ -1,5 +1,6 @@
 import { invoke } from "@tauri-apps/api";
 import { appWindow } from "@tauri-apps/api/window";
+import { listen } from "@tauri-apps/api/event";
 
 export const hideWindow = async () => {
   await invoke("hide_window");
@@ -22,6 +23,10 @@ export const onWindowShow = async (callback: () => void) => {
       callback();
     }
   });
+};
+
+export const onShortcut = async (callback: () => void) => {
+  listen("shortcut", callback);
 };
 
 export const invokeShortcut = async () => {

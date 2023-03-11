@@ -1,5 +1,6 @@
 import { Route, Routes, useNavigate } from "@solidjs/router";
 import ShortcutRoute from "./routes/shortcut";
+import TestShortcutRoute from "./routes/test-shortcut";
 import OpenAIEnvRoute from "./routes/openai";
 import { checkForAPIKey, hideWindow } from "./tauri";
 
@@ -20,11 +21,14 @@ function App() {
   });
 
   return (
-    <div ref={containerRef} class="container bg-background rounded-xl">
-      <Routes>
-        <Route path="/" component={ShortcutRoute} />
-        <Route path="/openai" component={OpenAIEnvRoute} />
-      </Routes>
+    <div class="p-2 h-max">
+      <div ref={containerRef} class="container shadow bg-background rounded-xl">
+        <Routes>
+          <Route path="/" component={ShortcutRoute} />
+          <Route path="/openai" component={OpenAIEnvRoute} />
+          <Route path="/test-shortcut" component={TestShortcutRoute} />
+        </Routes>
+      </div>
     </div>
   );
 }

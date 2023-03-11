@@ -1,6 +1,6 @@
 let colors = {
   background: {
-    light: "#ffffffaa",
+    light: "#f7fafdaa",
     dark: "#1b233b80",
   },
   textPrimary: {
@@ -22,6 +22,10 @@ let colors = {
   error: {
     light: "#f33800",
     dark: "#f24073",
+  },
+  success: {
+    light: "#63c132",
+    dark: "#0cce6b",
   },
 };
 

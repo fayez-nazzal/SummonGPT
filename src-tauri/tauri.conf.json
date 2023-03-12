@@ -18,6 +18,16 @@
       "globalShortcut": {
         "all": true
       },
+      "shell": {
+        "all": true,
+        "scope": [
+          {
+            "name": "printenv",
+            "cmd": "printenv",
+            "args": ["OPENAI_API_KEY"]
+          }
+        ]
+      },
       "window": {
         "center": true,
         "hide": true,
@@ -37,7 +47,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.summongpt.app",
       "targets": "all"
     },
     "security": {

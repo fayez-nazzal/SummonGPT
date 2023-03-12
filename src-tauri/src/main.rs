@@ -3,7 +3,6 @@
     windows_subsystem = "windows"
 )]
 
-use crate::commands::get_environment_variable;
 use crate::commands::hide_window;
 use crate::commands::println;
 use crate::commands::register_shortcut;
@@ -12,8 +11,8 @@ use auto_launch::*;
 use serde::ser::StdError;
 use state::init_state;
 use state::AppState;
-use tauri::ActivationPolicy;
 use std::env::current_exe;
+use tauri::ActivationPolicy;
 use tauri::App;
 use tauri::AppHandle;
 use tauri::Manager;
@@ -69,6 +68,20 @@ fn setup(app: &mut App) -> std::result::Result<(), Box<(dyn StdError + 'static)>
             .unwrap(),
     );
 
+    let auto_start = app_state.auto_start.as_ref();
+
+    if auto_start.is_some() {
+        let auto_start = auto_start.unwrap();
+
+        if !auto_start.is_enabled().is_err() && !auto_start.is_enabled().unwrap() {
+            let result = auto_start.enable();
+
+            if result.is_err() {
+                eprintln!("Failed to enable auto start");
+            }
+        };
+    }
+
     Ok(())
 }
 
@@ -91,7 +104,6 @@ fn main() {
             register_shortcut,
             unregister_shortcut,
             hide_window,
-            get_environment_variable,
             println
         ])
         .build(tauri::generate_context!())

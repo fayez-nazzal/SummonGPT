@@ -1,6 +1,7 @@
 import { invoke } from "@tauri-apps/api";
 import { appWindow } from "@tauri-apps/api/window";
 import { listen } from "@tauri-apps/api/event";
+import { Command } from "@tauri-apps/api/shell";
 
 export const hideWindow = async () => {
   await invoke("hide_window");
@@ -62,12 +63,4 @@ export const setAppTheme = () => {
 
 export const println = (message: string) => {
   invoke("println", { message });
-};
-
-export const getOpenAIAPIKey = async () => {
-  const APIKey = await invoke("get_environment_variable", {
-    name: "OPENAI_API_KEY",
-  });
-
-  return APIKey as string;
 };

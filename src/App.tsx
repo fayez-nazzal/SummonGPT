@@ -11,11 +11,16 @@ function App() {
   const navigate = useNavigate();
   const shortcutTested = localStorage.getItem("shortcut-tested");
   const [shortcut] = createSignal(localStorage.getItem("shortcut") || "");
+  const [apiKey] = createSignal(localStorage.getItem("OPENAI_API_KEY") || "");
 
   if (!shortcutTested || !shortcut()) {
     navigate("/shortcut");
   } else {
     conjureShortcut(shortcut());
+  }
+
+  if (!apiKey()) {
+    navigate("/openai");
   }
 
   return (

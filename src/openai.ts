@@ -1,12 +1,11 @@
 import { Configuration, OpenAIApi } from "openai";
-import { getOpenAIAPIKey } from "./tauri";
 import { IBobble } from "./types";
 
 let openai: OpenAIApi | undefined = undefined;
 
 export const initOpenAI = async () => {
   const configuration = new Configuration({
-    apiKey: await getOpenAIAPIKey(),
+    apiKey: localStorage.getItem("OPENAI_API_KEY") as string,
   });
 
   openai = new OpenAIApi(configuration);

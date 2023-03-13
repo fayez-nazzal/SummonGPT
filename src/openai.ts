@@ -42,3 +42,14 @@ export const getChatGPTReply = async (
     }, 48 * i);
   }
 };
+
+export const checkOpenAIAuth = async () => {
+  await initOpenAI();
+
+  try {
+    await openai!.listModels();
+    return true;
+  } catch (err) {
+    return false;
+  }
+};

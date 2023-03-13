@@ -1,20 +1,29 @@
 import { useNavigate } from "@solidjs/router";
 import scn from "scn";
 import { createSignal, JSX } from "solid-js";
+import { checkOpenAIAuth } from "../openai";
 
 const OpenAIEnvRoute = () => {
   const [apiKey, setAPIKey] = createSignal(
     localStorage.getItem("OPENAI_API_KEY") || ""
   );
+  const [isInvalid, setIsInvalid] = createSignal(false);
   const navigate = useNavigate();
 
   const onChange: JSX.EventHandler<HTMLInputElement, InputEvent> = (e) => {
     setAPIKey((e.target as HTMLInputElement).value);
   };
 
-  const onApply = () => {
-    // verify if key is valid
+  const onApply = async () => {
     localStorage.setItem("OPENAI_API_KEY", apiKey());
+    // verify if key is valid
+    if ((await checkOpenAIAuth()) === false) {
+      setIsInvalid(true);
+      localStorage.removeItem("OPENAI_API_KEY");
+      setAPIKey("");
+      return;
+    }
+
     navigate("/");
   };
 
@@ -25,7 +34,11 @@ const OpenAIEnvRoute = () => {
       </div>
       <div class="text-textPrimary text-sm leading-6">
         Please follow the steps on the{" "}
-        <a href="https://github.com/fayez-nazzal/SummonGPT" target="_blank">
+        <a
+          class="text-blue-500 mx-1"
+          href="https://github.com/fayez-nazzal/SummonGPT"
+          target="_blank"
+        >
           GitHub repo
         </a>{" "}
         to obtain one
@@ -35,16 +48,25 @@ const OpenAIEnvRoute = () => {
         <input
           type="text"
           class={scn(
-            "w-64 h-11",
-            "text-lg text-textPrimary placeholder:text-textPrimary/80",
+            "w-96 h-11",
+            "text-xs text-textPrimary placeholder:text-textPrimary/80",
             "bg-plane",
             "border border-melt/40",
-            "rounded-lg cursor-text p-4 focus:outline-none"
+            "rounded-lg cursor-text p-3 focus:outline-none"
           )}
           placeholder="Your OpenAI API Key"
           oninput={onChange}
           value={apiKey()}
         />
+
+        <div
+          class={scn(
+            ["invisible opacity-0", !isInvalid()],
+            "text-error text-sm leading-6"
+          )}
+        >
+          Invalid API key
+        </div>
 
         <button
           class={scn(

@@ -4,14 +4,14 @@ import { render } from "solid-js/web";
 import "./index.css";
 import "./et-book.css";
 import App from "./App";
-import { Router } from "@solidjs/router";
+import { hashIntegration, Router } from "@solidjs/router";
 import { setAppTheme } from "./tauri";
 
 setAppTheme();
 
 render(
   () => (
-    <Router>
+    <Router source={hashIntegration()}>
       <App />
     </Router>
   ),

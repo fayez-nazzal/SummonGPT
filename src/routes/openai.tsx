@@ -2,10 +2,11 @@ import { useNavigate } from "@solidjs/router";
 import scn from "scn";
 import { createSignal, JSX } from "solid-js";
 import { checkOpenAIAuth } from "../openai";
+import { EStorageKey, getStoredValue, setStoredValue } from "../storage";
 
 const OpenAIEnvRoute = () => {
   const [apiKey, setAPIKey] = createSignal(
-    localStorage.getItem("OPENAI_API_KEY") || ""
+    getStoredValue(EStorageKey.OpenAIKey, "")
   );
   const [isInvalid, setIsInvalid] = createSignal(false);
   const navigate = useNavigate();
@@ -15,15 +16,13 @@ const OpenAIEnvRoute = () => {
   };
 
   const onApply = async () => {
-    localStorage.setItem("OPENAI_API_KEY", apiKey());
-    // verify if key is valid
-    if ((await checkOpenAIAuth()) === false) {
+    if ((await checkOpenAIAuth(apiKey())) === false) {
       setIsInvalid(true);
-      localStorage.removeItem("OPENAI_API_KEY");
       setAPIKey("");
       return;
     }
 
+    setStoredValue(EStorageKey.OpenAIKey, apiKey());
     navigate("/");
   };
 

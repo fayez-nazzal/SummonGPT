@@ -1,12 +1,13 @@
 import { useNavigate } from "@solidjs/router";
 import { createEffect, createSignal, lazy } from "solid-js";
+import { EStorageKey, getStoredValue } from "../storage";
 const ShortcutInput = lazy(() => import("../components/ShortcutSetter"));
 import { conjureShortcut } from "../tauri";
 
 function ShortcutRoute() {
   const navigate = useNavigate();
   const [shortcut, setShortcut] = createSignal(
-    localStorage.getItem("shortcut") || ""
+    getStoredValue(EStorageKey.Shortcut, "")
   );
   const [isError, setIsError] = createSignal(false);
 

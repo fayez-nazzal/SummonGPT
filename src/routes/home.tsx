@@ -3,6 +3,7 @@ import scn from "scn";
 import { createSignal, lazy } from "solid-js";
 import Bobble from "../components/Bobble";
 import { getChatGPTReply } from "../openai";
+import { EStorageKey, getStoredValue } from "../storage";
 import {
   hideWindowOnBlur,
   hideWindow,
@@ -18,7 +19,7 @@ interface IHomeRouteProps {
 
 const HomeRoute = (props: IHomeRouteProps) => {
   const navigate = useNavigate();
-  const [shortcut] = createSignal(localStorage.getItem("shortcut") || "");
+  const [shortcut] = createSignal(getStoredValue(EStorageKey.Shortcut, ""));
   const [bobbles, setBobbles] = createSignal<IBobble[]>([]);
 
   if (!shortcut()) {
@@ -53,22 +54,26 @@ const HomeRoute = (props: IHomeRouteProps) => {
 
     let bobblesWithAssistant: IBobble[] | undefined = undefined;
 
-    await getChatGPTReply(bobbles(), (text) => {
-      const newBobble: IBobble = {
-        role: EBobbleType.Assistant,
-        content: text,
-      };
-
-      if (!bobblesWithAssistant) {
-        bobblesWithAssistant = [...bobbles(), newBobble];
-      } else {
-        bobblesWithAssistant[bobblesWithAssistant.length - 1] = {
-          ...newBobble,
+    await getChatGPTReply(
+      bobbles(),
+      (text) => {
+        const newBobble: IBobble = {
+          role: EBobbleType.Assistant,
+          content: text,
         };
-      }
 
-      setBobbles(() => [...bobblesWithAssistant!]);
-    });
+        if (!bobblesWithAssistant) {
+          bobblesWithAssistant = [...bobbles(), newBobble];
+        } else {
+          bobblesWithAssistant[bobblesWithAssistant.length - 1] = {
+            ...newBobble,
+          };
+        }
+
+        setBobbles(() => [...bobblesWithAssistant!]);
+      },
+      getStoredValue(EStorageKey.OpenAIKey)
+    );
   };
 
   return (

@@ -5,13 +5,14 @@ import OpenAIEnvRoute from "./routes/openai";
 import { conjureShortcut, hideWindow } from "./tauri";
 import HomeRoute from "./routes/home";
 import { createSignal } from "solid-js";
+import { EStorageKey, getStoredValue } from "./storage";
 
 function App() {
   let containerRef: HTMLDivElement | undefined;
   const navigate = useNavigate();
-  const shortcutTested = localStorage.getItem("shortcut-tested");
-  const [shortcut] = createSignal(localStorage.getItem("shortcut") || "");
-  const [apiKey] = createSignal(localStorage.getItem("OPENAI_API_KEY") || "");
+  const shortcutTested = getStoredValue(EStorageKey.IsShortcutTested);
+  const [shortcut] = createSignal(getStoredValue(EStorageKey.Shortcut, ""));
+  const [apiKey] = createSignal(getStoredValue(EStorageKey.OpenAIKey, ""));
 
   if (!shortcutTested || !shortcut()) {
     navigate("/shortcut");

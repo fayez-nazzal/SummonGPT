@@ -1,11 +1,12 @@
 import { Configuration, OpenAIApi } from "openai";
+import { EStorageKey, getStoredValue } from "./storage";
 import { IBobble } from "./types";
 
 let openai: OpenAIApi | undefined = undefined;
 
-export const initOpenAI = async () => {
+export const initOpenAI = async (apiKey: string) => {
   const configuration = new Configuration({
-    apiKey: localStorage.getItem("OPENAI_API_KEY") as string,
+    apiKey,
   });
 
   openai = new OpenAIApi(configuration);
@@ -13,10 +14,11 @@ export const initOpenAI = async () => {
 
 export const getChatGPTReply = async (
   bobbles: IBobble[],
-  onStream: (text: string) => void
+  onStream: (text: string) => void,
+  apiKey: string
 ) => {
   if (openai === undefined) {
-    await initOpenAI();
+    await initOpenAI(apiKey);
   }
 
   const response = await openai!.createChatCompletion({
@@ -43,8 +45,8 @@ export const getChatGPTReply = async (
   }
 };
 
-export const checkOpenAIAuth = async () => {
-  await initOpenAI();
+export const checkOpenAIAuth = async (apiKey: string) => {
+  await initOpenAI(apiKey);
 
   try {
     await openai!.listModels();

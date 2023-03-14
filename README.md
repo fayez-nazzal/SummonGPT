@@ -1,4 +1,4 @@
-# TestGPT
+# SummonGPT
 
 Summon ChatGPT using a keyboard shortcut, just like a sorcerer!
 
@@ -53,8 +53,9 @@ Please build from source :D
 
 3. Run the following commands to start the build process:
 ```console
-npm run build
-npm run tauri build
+npm i -g pnpm
+pnpm install
+pnpm tauri build
 ```
 
 4. You will find resulting binaries in `SummonGPT/src-tauri/target/release`.

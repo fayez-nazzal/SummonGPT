@@ -1,5 +1,4 @@
 import { Configuration, OpenAIApi } from "openai";
-import { EStorageKey, getStoredValue } from "./storage";
 import { IBobble } from "./types";
 
 let openai: OpenAIApi | undefined = undefined;

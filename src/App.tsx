@@ -11,17 +11,15 @@ function App() {
   let containerRef: HTMLDivElement | undefined;
   const navigate = useNavigate();
   const shortcutTested = getStoredValue(EStorageKey.IsShortcutTested);
+  const apiKey = getStoredValue(EStorageKey.OpenAIKey);
   const [shortcut] = createSignal(getStoredValue(EStorageKey.Shortcut, ""));
-  const [apiKey] = createSignal(getStoredValue(EStorageKey.OpenAIKey, ""));
 
-  if (!shortcutTested || !shortcut()) {
+  if (!apiKey) {
+    navigate("/openai");
+  } else if (!shortcutTested || !shortcut()) {
     navigate("/shortcut");
   } else {
     registerShortcut(shortcut());
-  }
-
-  if (!apiKey()) {
-    navigate("/openai");
   }
 
   return (

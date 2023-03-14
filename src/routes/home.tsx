@@ -25,14 +25,12 @@ const HomeRoute = (props: IHomeRouteProps) => {
   const [bobbles, setBobbles] = createSignal<IBobble[]>([]);
   let [isExporting, setIsExporting] = createSignal(false);
 
-  if (!shortcut()) {
-    navigate("/shortcut");
-  }
-
   window.addEventListener("click", (ev) => {
     if (
       !isExporting() &&
-      !["TEXTAREA", "BUTTON"].includes((ev.target as HTMLElement)?.nodeName) &&
+      !["TEXTAREA", "INPUT", "BUTTON"].includes(
+        (ev.target as HTMLElement)?.nodeName
+      ) &&
       props.containerRef &&
       !props.containerRef.contains(ev.target as Node)
     ) {

@@ -2,7 +2,7 @@ import { Route, Routes, useNavigate } from "@solidjs/router";
 import ShortcutRoute from "./routes/shortcut";
 import TestShortcutRoute from "./routes/test-shortcut";
 import OpenAIEnvRoute from "./routes/openai";
-import { conjureShortcut, hideWindow } from "./tauri";
+import { registerShortcut, hideWindow } from "./tauri";
 import HomeRoute from "./routes/home";
 import { createSignal } from "solid-js";
 import { EStorageKey, getStoredValue } from "./storage";
@@ -17,7 +17,7 @@ function App() {
   if (!shortcutTested || !shortcut()) {
     navigate("/shortcut");
   } else {
-    conjureShortcut(shortcut());
+    registerShortcut(shortcut());
   }
 
   if (!apiKey()) {

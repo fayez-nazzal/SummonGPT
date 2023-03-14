@@ -14,7 +14,7 @@ export const onWindowBlur = async (callback: () => void) => {
 };
 
 // Passes the shortcut to the rust backend, the rust backed will remove previous shortcuts and register the new one
-export const conjureShortcut = async (shortcut: string) => {
+export const registerShortcut = async (shortcut: string) => {
   shortcut = shortcut.toUpperCase();
 
   return await invoke("register_shortcut", { shortcut });

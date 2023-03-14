@@ -2,7 +2,7 @@ import { useNavigate } from "@solidjs/router";
 import { createEffect, createSignal, lazy } from "solid-js";
 import { EStorageKey, getStoredValue } from "../storage";
 const ShortcutInput = lazy(() => import("../components/ShortcutSetter"));
-import { conjureShortcut } from "../tauri";
+import { registerShortcut } from "../tauri";
 
 function ShortcutRoute() {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ function ShortcutRoute() {
         shortcutValue.toLowerCase().split("+")[0]
       )
     ) {
-      let result = await conjureShortcut(shortcut());
+      let result = await registerShortcut(shortcut());
       setIsError(!result);
       result && localStorage.setItem("shortcut", shortcutValue);
       navigate("/test-shortcut");

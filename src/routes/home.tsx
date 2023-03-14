@@ -11,6 +11,7 @@ import {
   onWindowHide,
   println,
   exportChat,
+  registerShortcut,
 } from "../tauri";
 import { EBobbleType, IBobble } from "../types";
 const UserInput = lazy(() => import("../components/UserInput"));
@@ -21,9 +22,19 @@ interface IHomeRouteProps {
 
 const HomeRoute = (props: IHomeRouteProps) => {
   const navigate = useNavigate();
-  const [shortcut] = createSignal(getStoredValue(EStorageKey.Shortcut, ""));
   const [bobbles, setBobbles] = createSignal<IBobble[]>([]);
   let [isExporting, setIsExporting] = createSignal(false);
+  const shortcutTested = getStoredValue(EStorageKey.IsShortcutTested);
+  const apiKey = getStoredValue(EStorageKey.OpenAIKey);
+  const [shortcut] = createSignal(getStoredValue(EStorageKey.Shortcut, ""));
+
+  if (!apiKey) {
+    navigate("/openai");
+  } else if (!shortcutTested || !shortcut()) {
+    navigate("/shortcut");
+  } else {
+    registerShortcut(shortcut());
+  }
 
   window.addEventListener("click", (ev) => {
     if (

@@ -7,8 +7,3 @@ html, body, #root {
     border-radius: 8px;
     overflow: hidden;
 }
-
-.container  {
-    backdrop-filter: blur( 4px );
-    -webkit-backdrop-filter: blur( 4px );
-}

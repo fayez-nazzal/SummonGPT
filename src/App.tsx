@@ -26,7 +26,7 @@ function App() {
 
   return (
     <div class="p-2 h-max">
-      <div ref={containerRef} class="container shadow bg-background rounded-xl">
+      <div ref={containerRef} class="shadow bg-background rounded-xl">
         <Routes>
           <Route path="/shortcut" component={ShortcutRoute} />
           <Route path="/openai" component={OpenAIEnvRoute} />

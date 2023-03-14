@@ -81,7 +81,7 @@ const HomeRoute = (props: IHomeRouteProps) => {
       <div
         class={scn(
           ["p-3", bobbles().length],
-          "flex flex-col max-h-[500px] gap-3 overflow-auto"
+          "flex flex-col max-h-[500px] gap-5 overflow-auto"
         )}
       >
         {bobbles().map((bobble) => (

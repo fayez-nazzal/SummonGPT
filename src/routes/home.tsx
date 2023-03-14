@@ -9,6 +9,7 @@ import {
   hideWindow,
   onSetupShortcut,
   onWindowHide,
+  println,
 } from "../tauri";
 import { EBobbleType, IBobble } from "../types";
 const UserInput = lazy(() => import("../components/UserInput"));
@@ -27,7 +28,11 @@ const HomeRoute = (props: IHomeRouteProps) => {
   }
 
   window.addEventListener("click", (ev) => {
-    if (props.containerRef && !props.containerRef.contains(ev.target as Node)) {
+    if (
+      (ev.target as HTMLElement)?.nodeName === "DIV" &&
+      props.containerRef &&
+      !props.containerRef.contains(ev.target as Node)
+    ) {
       hideWindow();
     }
   });

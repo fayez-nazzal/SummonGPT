@@ -1,14 +1,16 @@
 import { invoke } from "@tauri-apps/api";
 import { appWindow } from "@tauri-apps/api/window";
 import { listen } from "@tauri-apps/api/event";
-import { Command } from "@tauri-apps/api/shell";
+import { save } from "@tauri-apps/api/dialog";
+import { writeTextFile } from "@tauri-apps/api/fs";
+import { IBobble } from "./types";
 
 export const hideWindow = async () => {
   await invoke("hide_window");
 };
 
-export const hideWindowOnBlur = async () => {
-  appWindow.listen("tauri://blur", hideWindow);
+export const onWindowBlur = async (callback: () => void) => {
+  appWindow.listen("tauri://blur", callback);
 };
 
 // Passes the shortcut to the rust backend, the rust backed will remove previous shortcuts and register the new one
@@ -63,4 +65,18 @@ export const setAppTheme = () => {
 
 export const println = (message: string) => {
   invoke("println", { message });
+};
+
+export const exportChat = async (bobbles: IBobble[]) => {
+  const filePath = await save({
+    title: "Export chat",
+    filters: [
+      {
+        name: "chat",
+        extensions: ["json"],
+      },
+    ],
+  });
+
+  filePath && (await writeTextFile(filePath, JSON.stringify(bobbles)));
 };

@@ -5,11 +5,12 @@ import Bobble from "../components/Bobble";
 import { getChatGPTReply } from "../openai";
 import { EStorageKey, getStoredValue } from "../storage";
 import {
-  hideWindowOnBlur,
   hideWindow,
   onSetupShortcut,
+  onWindowBlur,
   onWindowHide,
   println,
+  exportChat,
 } from "../tauri";
 import { EBobbleType, IBobble } from "../types";
 const UserInput = lazy(() => import("../components/UserInput"));
@@ -22,6 +23,7 @@ const HomeRoute = (props: IHomeRouteProps) => {
   const navigate = useNavigate();
   const [shortcut] = createSignal(getStoredValue(EStorageKey.Shortcut, ""));
   const [bobbles, setBobbles] = createSignal<IBobble[]>([]);
+  let [isExporting, setIsExporting] = createSignal(false);
 
   if (!shortcut()) {
     navigate("/shortcut");
@@ -29,7 +31,8 @@ const HomeRoute = (props: IHomeRouteProps) => {
 
   window.addEventListener("click", (ev) => {
     if (
-      (ev.target as HTMLElement)?.nodeName === "DIV" &&
+      !isExporting() &&
+      !["TEXTAREA", "BUTTON"].includes((ev.target as HTMLElement)?.nodeName) &&
       props.containerRef &&
       !props.containerRef.contains(ev.target as Node)
     ) {
@@ -37,7 +40,9 @@ const HomeRoute = (props: IHomeRouteProps) => {
     }
   });
 
-  hideWindowOnBlur();
+  onWindowBlur(() => {
+    if (!isExporting()) hideWindow();
+  });
 
   onWindowHide(() => {
     setBobbles(() => []);
@@ -81,8 +86,14 @@ const HomeRoute = (props: IHomeRouteProps) => {
     );
   };
 
+  const onSave = async () => {
+    setIsExporting(true);
+    await exportChat(bobbles());
+    setIsExporting(false);
+  };
+
   return (
-    <div class={scn("flex flex-col", ["pt-3 gap-3", bobbles().length])}>
+    <div class={scn("relative flex flex-col")}>
       <div
         class={scn(
           ["p-3", bobbles().length],
@@ -92,6 +103,17 @@ const HomeRoute = (props: IHomeRouteProps) => {
         {bobbles().map((bobble) => (
           <Bobble bobble={bobble} />
         ))}
+        <button
+          onClick={onSave}
+          class={scn(
+            ["hidden", !bobbles().length],
+            "absolute top-1 left-1",
+            "p-1 rounded-lg",
+            "text-primary text-xs font-medium hover:bg-melt"
+          )}
+        >
+          Export Chat
+        </button>
       </div>
       <UserInput onSubmit={onUserInputSubmit} onDismiss={hideWindow} />
     </div>

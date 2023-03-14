@@ -18,15 +18,11 @@
       "globalShortcut": {
         "all": true
       },
-      "shell": {
-        "all": true,
-        "scope": [
-          {
-            "name": "printenv",
-            "cmd": "printenv",
-            "args": ["OPENAI_API_KEY"]
-          }
-        ]
+      "dialog": {
+        "save": true
+      },
+      "fs": {
+        "writeFile": true
       },
       "window": {
         "center": true,

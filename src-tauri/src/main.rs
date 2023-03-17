@@ -3,9 +3,11 @@
     windows_subsystem = "windows"
 )]
 
+use crate::commands::check_openai_auth;
 use crate::commands::hide_window;
 use crate::commands::println;
 use crate::commands::register_shortcut;
+use crate::commands::stream_chat;
 use crate::commands::unregister_shortcut;
 use auto_launch::*;
 use serde::ser::StdError;
@@ -24,12 +26,20 @@ mod state;
 mod tray;
 
 #[derive(Clone, serde::Serialize)]
-struct HistoryEventPayload {}
+struct EventPayload {
+}
+
+#[derive(Clone, serde::Serialize)]
+struct StreamEventPayload {
+    content: String,
+    bobble_index: i32,
+}
 
 enum Event {
     Shortcut,
     SetupShortcut,
     WindowHide,
+    Stream
 }
 
 impl Event {
@@ -38,13 +48,20 @@ impl Event {
             Event::Shortcut => "shortcut".to_string(),
             Event::SetupShortcut => "setup_shortcut".to_string(),
             Event::WindowHide => "window_hide".to_string(),
+            Event::Stream => "stream".to_string()
         }
     }
 }
 
 fn emit_event(event: Event, handle: &AppHandle) {
     handle
-        .emit_all(event.to_string().as_str(), HistoryEventPayload {})
+        .emit_all(event.to_string().as_str(), EventPayload {})
+        .unwrap();
+}
+
+fn emit_stream_event(handle: &AppHandle, content: String, bobble_index: i32) {
+    handle
+        .emit_all(&Event::Stream.to_string().as_str(), StreamEventPayload { content, bobble_index })
         .unwrap();
 }
 
@@ -104,7 +121,9 @@ fn main() {
             register_shortcut,
             unregister_shortcut,
             hide_window,
-            println
+            println,
+            stream_chat,
+            check_openai_auth
         ])
         .build(tauri::generate_context!())
         .expect("error while building tauri application")

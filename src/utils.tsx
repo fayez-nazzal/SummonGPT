@@ -1,5 +1,22 @@
-import { EBobbleType } from "./types";
+import { EBobbleType, IBobble } from "./types";
 import { BsMagic } from "solid-icons/bs";
+
+export const appendToArr = <T,>(arr: T[], ...item: T[]) => [...arr, ...item];
+
+export const newAssistantBobble = (): IBobble => ({
+  role: EBobbleType.Assistant,
+  content: "",
+});
+
+export const changeAtIndex = <T,>(
+  arr: T[],
+  index: number,
+  callback: (item: T) => T
+) => {
+  const newArr = [...arr];
+  newArr[index] = callback(newArr[index]);
+  return newArr;
+};
 
 export const getIconForBobbleType = (type: EBobbleType) =>
   type === EBobbleType.User

@@ -1,56 +1,25 @@
-import { Configuration, OpenAIApi } from "openai";
+import { invoke } from "@tauri-apps/api";
+import { listen } from "@tauri-apps/api/event";
 import { IBobble } from "./types";
 
-let openai: OpenAIApi | undefined = undefined;
+export const getChatGPTReply = async (bobbles: IBobble[], apiKey: string) => {
+  console.log(bobbles);
 
-export const initOpenAI = async (apiKey: string) => {
-  const configuration = new Configuration({
-    apiKey,
+  invoke("stream_chat", {
+    bobbles,
+    bobbleIndex: bobbles.length - 1,
+    apiKey: apiKey,
   });
-
-  openai = new OpenAIApi(configuration);
 };
 
-export const getChatGPTReply = async (
-  bobbles: IBobble[],
-  onStream: (text: string) => void,
-  apiKey: string
-) => {
-  if (openai === undefined) {
-    await initOpenAI(apiKey);
-  }
-
-  const response = await openai!.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    messages: [
-      {
-        role: "system",
-        content: "You are an Assistant.",
-      },
-      ...bobbles,
-    ],
+export const onStreamEvent = async (callback: (payload: any) => void) => {
+  setTimeout(() => {
+    listen("stream", callback);
   });
-
-  const text = response.data.choices[0].message?.content;
-
-  text?.replace(/\\n/g, "\n");
-
-  if (!text) return;
-
-  for (let i = 0; i < text.length; i++) {
-    setTimeout(() => {
-      onStream(text.slice(0, i));
-    }, 48 * i);
-  }
 };
 
 export const checkOpenAIAuth = async (apiKey: string) => {
-  await initOpenAI(apiKey);
+  const result = await invoke("check_openai_auth", { apiKey });
 
-  try {
-    await openai!.listModels();
-    return true;
-  } catch (err) {
-    return false;
-  }
+  return result;
 };

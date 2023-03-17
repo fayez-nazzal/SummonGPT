@@ -2,18 +2,18 @@ import { useNavigate } from "@solidjs/router";
 import scn from "scn";
 import { createSignal, lazy } from "solid-js";
 import Bobble from "../components/Bobble";
-import { getChatGPTReply } from "../openai";
+import { getChatGPTReply, onStreamEvent } from "../openai";
 import { EStorageKey, getStoredValue } from "../storage";
 import {
   hideWindow,
   onSetupShortcut,
   onWindowBlur,
   onWindowHide,
-  println,
   exportChat,
   registerShortcut,
 } from "../tauri";
 import { EBobbleType, IBobble } from "../types";
+import { appendToArr, changeAtIndex, newAssistantBobble } from "../utils";
 const UserInput = lazy(() => import("../components/UserInput"));
 
 interface IHomeRouteProps {
@@ -63,37 +63,30 @@ const HomeRoute = (props: IHomeRouteProps) => {
   });
 
   const onUserInputSubmit = async (value: string) => {
-    setBobbles((bobbles) => [
-      ...bobbles,
-      {
-        role: EBobbleType.User,
-        content: value,
-      },
-    ]);
-
-    let bobblesWithAssistant: IBobble[] | undefined = undefined;
-
-    await getChatGPTReply(
-      bobbles(),
-      (text) => {
-        const newBobble: IBobble = {
-          role: EBobbleType.Assistant,
-          content: text,
-        };
-
-        if (!bobblesWithAssistant) {
-          bobblesWithAssistant = [...bobbles(), newBobble];
-        } else {
-          bobblesWithAssistant[bobblesWithAssistant.length - 1] = {
-            ...newBobble,
-          };
-        }
-
-        setBobbles(() => [...bobblesWithAssistant!]);
-      },
-      getStoredValue(EStorageKey.OpenAIKey)
+    setBobbles((bobbles) =>
+      appendToArr(
+        bobbles,
+        {
+          role: EBobbleType.User,
+          content: value,
+        },
+        newAssistantBobble()
+      )
     );
+
+    await getChatGPTReply(bobbles(), getStoredValue(EStorageKey.OpenAIKey));
   };
+
+  onStreamEvent(({ payload }) => {
+    const { bobble_index, content } = payload;
+
+    setBobbles((bobbles) =>
+      changeAtIndex(bobbles, bobble_index, (bobble) => ({
+        ...bobble,
+        content: bobble.content + content,
+      }))
+    );
+  });
 
   const onSave = async () => {
     setIsExporting(true);

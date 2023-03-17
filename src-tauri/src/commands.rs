@@ -1,5 +1,12 @@
-use crate::{emit_event, state::AppState, Event};
+use crate::{emit_event, emit_stream_event, state::AppState, Event};
+use async_openai::types::{
+    ChatCompletionRequestMessageArgs, CreateChatCompletionRequestArgs, Role, ChatCompletionRequestMessage,
+};
+use async_openai::Client;
+use futures::StreamExt;
+use serde::{Serialize, Deserialize};
 use tauri::{GlobalShortcutManager, Manager};
+use tokio::runtime::Builder;
 
 pub fn on_shortcut(handle: tauri::AppHandle) {
     println!("Shortcut pressed");
@@ -91,4 +98,93 @@ pub fn hide_window(handle: tauri::AppHandle) {
     app_window.hide().expect("Failed to hide window");
 
     emit_event(Event::WindowHide, &handle);
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Bobble {
+    role: i32,
+    content: String,
+}
+
+pub async fn async_stream_chat(
+    bobbles: Vec<Bobble>,
+    bobble_index: i32,
+    api_key: &str,
+    handle: tauri::AppHandle,
+) -> Result<(), Box<dyn std::error::Error>> {
+    let messages: Vec<ChatCompletionRequestMessage> = bobbles
+    .into_iter()
+    .map(|bobble| {
+        let role = match bobble.role {
+            0 => Role::System,
+            1 => Role::User,
+            _ => Role::Assistant,
+        };
+        
+        ChatCompletionRequestMessageArgs::default()
+            .role(role)
+            .content(bobble.content)
+            .build()
+            .unwrap()
+    })
+    .collect();
+
+    let request = CreateChatCompletionRequestArgs::default()
+        .model("gpt-3.5-turbo")
+        .max_tokens(1024u16)
+        .messages(messages)
+        .build()
+        .unwrap();
+
+    let state = handle.state::<AppState>();
+    let mut app_state = state.0.lock().unwrap();
+
+    if app_state.client.is_none() {
+        app_state.client = Some(Client::new().with_api_key(api_key));
+    }
+
+    let client = app_state.client.as_ref().unwrap();
+
+    let mut stream = client.chat().create_stream(request).await.unwrap();
+
+    while let Some(result) = stream.next().await {
+        match result {
+            Ok(response) => {
+                response.choices.iter().for_each(|chat_choice| {
+                    if let Some(ref content) = chat_choice.delta.content {
+                        emit_stream_event(&handle, content.to_string(), bobble_index);
+                    }
+                });
+            }
+            Err(err) => {
+                eprintln!("Error: {}", err);
+            }
+        }
+    }
+
+    Ok(())
+}
+
+#[tauri::command(async)]
+pub async fn stream_chat(bobbles: Vec<Bobble>, bobble_index: i32, api_key: String, handle: tauri::AppHandle) {
+    let handle_clone = handle.clone();
+
+    // call stream chat async
+    std::thread::spawn(move || {
+        let rt = Builder::new_multi_thread()
+            .enable_all()
+            .build()
+            .unwrap();
+
+        rt.block_on(async_stream_chat(bobbles, bobble_index, api_key.as_str(), handle_clone)).unwrap();
+    });
+}
+
+#[tauri::command(async)]
+pub async fn check_openai_auth(api_key: String) -> bool {
+    let client = Client::new().with_api_key(api_key.as_str());
+
+    let result = client.files().list().await;
+
+    result.is_ok()
 }

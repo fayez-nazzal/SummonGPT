@@ -47,7 +47,7 @@
       "targets": "all"
     },
     "security": {
-      "csp": null
+      "csp": ""
     },
     "updater": {
       "active": false

@@ -1,6 +1,7 @@
 export enum EBobbleType {
-  User = "user",
-  Assistant = "assistant",
+  System,
+  User,
+  Assistant,
 }
 
 export interface IBobble {

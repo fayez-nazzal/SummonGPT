@@ -1,4 +1,4 @@
-import { invoke } from "@tauri-apps/api";
+import { clipboard, invoke } from "@tauri-apps/api";
 import { appWindow } from "@tauri-apps/api/window";
 import { listen } from "@tauri-apps/api/event";
 import { save } from "@tauri-apps/api/dialog";
@@ -79,4 +79,8 @@ export const exportChat = async (bobbles: IBobble[]) => {
   });
 
   filePath && (await writeTextFile(filePath, JSON.stringify(bobbles)));
+};
+
+export const copyToClipboard = async (text: string) => {
+  await clipboard.writeText(text);
 };

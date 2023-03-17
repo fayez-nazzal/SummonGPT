@@ -1,7 +1,9 @@
 import { EBobbleType, IBobble } from "../types";
 import scn from "scn";
-import { createEffect } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import { getIconForBobbleType } from "../utils";
+import { FaSolidCopy, FaSolidClipboardCheck } from "solid-icons/fa";
+import { copyToClipboard } from "../tauri";
 
 interface IBobbleProps {
   bobble: IBobble;
@@ -9,7 +11,7 @@ interface IBobbleProps {
 
 const Bobble = (props: IBobbleProps) => {
   let wrapperRef: HTMLDivElement | undefined = undefined;
-
+  let [isCopied, setIsCopied] = createSignal(false);
   createEffect(() => {
     if (wrapperRef) {
       wrapperRef.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -17,6 +19,15 @@ const Bobble = (props: IBobbleProps) => {
   });
 
   const Icon = getIconForBobbleType(props.bobble.role);
+
+  const onCopy = () => {
+    setIsCopied(true);
+    copyToClipboard(props.bobble.content);
+
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 1000);
+  };
 
   return (
     <div
@@ -27,10 +38,24 @@ const Bobble = (props: IBobbleProps) => {
         ["flex-row-reverse", props.bobble.role === EBobbleType.Assistant]
       )}
     >
+      <button
+        class={scn(
+          "mr-auto ml-1",
+          ["hidden", props.bobble.role !== EBobbleType.Assistant],
+          ["text-melt hover:text-primary", !isCopied()],
+          ["text-success", isCopied()]
+        )}
+        onClick={onCopy}
+      >
+        <FaSolidClipboardCheck
+          class={scn("w-5 h-5", ["hidden", !isCopied()])}
+        />
+        <FaSolidCopy class={scn("w-5 h-5", ["hidden", isCopied()])} />
+      </button>
       <div
         class={scn(
           "max-w-[540px]",
-          ["bg-primary mr-auto", props.bobble.role === EBobbleType.Assistant],
+          ["bg-primary", props.bobble.role === EBobbleType.Assistant],
           [
             "bg-background-dark/20 dark:bg-background-light/20 ml-auto",
             props.bobble.role === EBobbleType.User,

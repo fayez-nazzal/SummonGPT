@@ -24,6 +24,9 @@
       "fs": {
         "writeFile": true
       },
+      "clipboard": {
+        "writeText": true
+      },
       "window": {
         "center": true,
         "hide": true,

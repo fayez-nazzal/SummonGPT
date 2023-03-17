@@ -9,6 +9,8 @@ import { setAppTheme } from "./tauri";
 
 setAppTheme();
 
+document.addEventListener("contextmenu", (e) => e.preventDefault());
+
 render(
   () => (
     <Router source={hashIntegration()}>

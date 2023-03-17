@@ -29,6 +29,13 @@ const Bobble = (props: IBobbleProps) => {
     }, 1000);
   };
 
+  // copy on right click
+  const onMouseDown = (e: MouseEvent) => {
+    if (e.button === 2) {
+      onCopy();
+    }
+  };
+
   return (
     <div
       ref={wrapperRef}
@@ -37,6 +44,8 @@ const Bobble = (props: IBobbleProps) => {
         ["hidden", !props.bobble.content],
         ["flex-row-reverse", props.bobble.role === EBobbleType.Assistant]
       )}
+      onMouseDown={onMouseDown}
+      onDblClick={onCopy}
     >
       <button
         class={scn(

@@ -80,11 +80,13 @@ const HomeRoute = (props: IHomeRouteProps) => {
   onStreamEvent(({ payload }) => {
     const { bobble_index, content } = payload;
 
-    setBobbles((bobbles) =>
-      changeAtIndex(bobbles, bobble_index, (bobble) => ({
-        ...bobble,
-        content: bobble.content + content,
-      }))
+    setBobbles(
+      (bobbles) =>
+        bobbles[bobble_index] &&
+        changeAtIndex(bobbles, bobble_index, (bobble) => ({
+          ...bobble,
+          content: bobble.content + content,
+        }))
     );
   });
 
@@ -95,7 +97,7 @@ const HomeRoute = (props: IHomeRouteProps) => {
   };
 
   return (
-    <div class={scn("relative flex flex-col")}>
+    <div class={scn("relative flex flex-col overflow-hidden")}>
       <div
         class={scn(
           ["p-3", bobbles().length],

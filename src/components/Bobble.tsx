@@ -21,10 +21,11 @@ const Bobble = (props: IBobbleProps) => {
   return (
     <div
       ref={wrapperRef}
-      class={scn("flex gap-2", [
-        "flex-row-reverse",
-        props.bobble.role === EBobbleType.Assistant,
-      ])}
+      class={scn(
+        "flex gap-2",
+        ["hidden", !props.bobble.content],
+        ["flex-row-reverse", props.bobble.role === EBobbleType.Assistant]
+      )}
     >
       <div
         class={scn(

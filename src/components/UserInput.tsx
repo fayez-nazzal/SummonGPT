@@ -52,7 +52,7 @@ const UserInput = (props: ITextInputProps) => {
         "bg-plane text-textPrimary placeholder:textPrimary/80",
         "text-md",
         "resize-none",
-        "border border-melt/40",
+        "border border-melt/90",
         "rounded-lg cursor-text p-4 focus:outline-none "
       )}
       autofocus

@@ -21,6 +21,8 @@ pub fn on_shortcut(handle: tauri::AppHandle) {
     }
 
     app_window.show().unwrap();
+    app_window.set_always_on_top(true).unwrap();
+    app_window.center().unwrap();
     app_window.set_focus().unwrap();
     let result = app_window.set_focus();
 

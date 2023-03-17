@@ -14,6 +14,7 @@ use serde::ser::StdError;
 use state::init_state;
 use state::AppState;
 use std::env::current_exe;
+#[cfg(target_os = "macos")]
 use tauri::ActivationPolicy;
 use tauri::App;
 use tauri::AppHandle;
@@ -66,6 +67,7 @@ fn emit_stream_event(handle: &AppHandle, content: String, bobble_index: i32) {
 }
 
 fn setup(app: &mut App) -> std::result::Result<(), Box<(dyn StdError + 'static)>> {
+    #[cfg(target_os = "macos")]
     app.set_activation_policy(ActivationPolicy::Accessory);
 
     let handle = app.handle();

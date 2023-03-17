@@ -107,17 +107,6 @@ const HomeRoute = (props: IHomeRouteProps) => {
         {bobbles().map((bobble) => (
           <Bobble bobble={bobble} />
         ))}
-        <button
-          onClick={onSave}
-          class={scn(
-            ["hidden", !bobbles().length],
-            "absolute top-1 left-1",
-            "p-1 rounded-lg",
-            "text-primary text-xs font-medium hover:bg-melt"
-          )}
-        >
-          Export Chat
-        </button>
       </div>
       <UserInput onSubmit={onUserInputSubmit} onDismiss={hideWindow} />
     </div>

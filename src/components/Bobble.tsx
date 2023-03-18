@@ -1,12 +1,13 @@
 import { EBobbleType, IBobble } from "../types";
 import scn from "scn";
 import { createEffect, createSignal } from "solid-js";
-import { getIconForBobbleType } from "../utils";
 import { FaSolidCopy, FaSolidClipboardCheck } from "solid-icons/fa";
 import { copyToClipboard } from "../tauri";
+import { Avatar } from "./Avatar";
 
 interface IBobbleProps {
   bobble: IBobble;
+  customImage?: string;
 }
 
 const Bobble = (props: IBobbleProps) => {
@@ -17,8 +18,6 @@ const Bobble = (props: IBobbleProps) => {
       wrapperRef.scrollIntoView({ behavior: "smooth", block: "end" });
     }
   });
-
-  const Icon = getIconForBobbleType(props.bobble.role);
 
   const onCopy = () => {
     if (typeof props.bobble.content !== "string") return;
@@ -82,16 +81,7 @@ const Bobble = (props: IBobbleProps) => {
       >
         {props.bobble.content}
       </div>
-      <div
-        class={scn(
-          "flex justify-center items-center rounded-lg w-8 h-8 text-textPrimary-dark dark:text-textPrimary-light",
-          ["bg-textPrimary", props.bobble.role === EBobbleType.User],
-          ["hidden", props.bobble.role === EBobbleType.Spell],
-          "mt-0.5"
-        )}
-      >
-        <Icon />
-      </div>
+      <Avatar customImage={props.customImage} role={props.bobble.role} />
     </div>
   );
 };

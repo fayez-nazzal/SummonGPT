@@ -8,6 +8,7 @@ import {
   getHistoryItems,
   getStoredValue,
   saveHistoryItem,
+  setStoredValue,
 } from "../storage";
 import {
   hideWindow,
@@ -16,6 +17,7 @@ import {
   onWindowHide,
   exportChat,
   registerShortcut,
+  chooseAvatarImage,
 } from "../tauri";
 import { EBobbleType, ESpells, IBobble, IHistoryItem } from "../types";
 import {
@@ -41,6 +43,9 @@ const HomeRoute = (props: IHomeRouteProps) => {
   const shortcutTested = getStoredValue(EStorageKey.IsShortcutTested);
   const apiKey = getStoredValue(EStorageKey.OpenAIKey);
   const [shortcut] = createSignal(getStoredValue(EStorageKey.Shortcut, ""));
+  const [avatarPath, setAvatarPath] = createSignal(
+    getStoredValue(EStorageKey.AvatarPath)
+  );
   let chatId = `${Date.now()}`;
 
   if (!apiKey) {
@@ -113,8 +118,18 @@ const HomeRoute = (props: IHomeRouteProps) => {
                 ),
               })
             );
+          break;
         case ESpells.Export:
           await onSave();
+          break;
+        case ESpells.Avatar:
+          const newAvatarPath = await chooseAvatarImage();
+
+          if (newAvatarPath) {
+            setAvatarPath(newAvatarPath);
+            setStoredValue(EStorageKey.AvatarPath, newAvatarPath);
+          }
+
           break;
       }
 
@@ -152,7 +167,12 @@ const HomeRoute = (props: IHomeRouteProps) => {
         )}
       >
         {bobbles().map((bobble) => (
-          <Bobble bobble={bobble} />
+          <Bobble
+            bobble={bobble}
+            customImage={
+              bobble.role === EBobbleType.User ? avatarPath() : undefined
+            }
+          />
         ))}
       </div>
       <UserInput onSubmit={onUserInputSubmit} onDismiss={hideWindow} />

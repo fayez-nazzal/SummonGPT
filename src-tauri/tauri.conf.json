@@ -19,13 +19,15 @@
         "all": true
       },
       "dialog": {
-        "save": true
+        "save": true,
+        "open": true
       },
       "fs": {
         "readDir": true,
         "readFile": true,
         "writeFile": true,
         "createDir": true,
+        "copyFile": true,
         "scope": ["$APPDATA/history", "$APPDATA/history/*"]
       },
       "path": {
@@ -42,6 +44,10 @@
         "setFocus": true,
         "show": true,
         "unminimize": true
+      },
+      "protocol": {
+        "asset": true,
+        "assetScope": ["$APPDATA/*"]
       }
     },
     "bundle": {
@@ -57,7 +63,7 @@
       "targets": "all"
     },
     "security": {
-      "csp": ""
+      "csp": "default-src 'self'; img-src 'self' asset: https://asset.localhost"
     },
     "updater": {
       "active": false

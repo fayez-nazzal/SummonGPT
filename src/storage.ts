@@ -11,6 +11,7 @@ export enum EStorageKey {
   IsShortcutTested = "shortcut-tested",
   Shortcut = "shortcut",
   OpenAIKey = "OPENAI_API_KEY",
+  AvatarPath = "avatar-path",
 }
 
 export const HISTORY_DIR = "history";

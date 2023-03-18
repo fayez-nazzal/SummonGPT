@@ -4,10 +4,8 @@ import {
   readDir,
   writeTextFile,
   readTextFile,
-  exists,
 } from "@tauri-apps/api/fs";
-import { appDataDir } from "@tauri-apps/api/path";
-import { IBobble } from "./types";
+import { IBobble, IHistoryItem } from "./types";
 
 export enum EStorageKey {
   IsShortcutTested = "shortcut-tested",
@@ -54,19 +52,24 @@ export const getHistoryDirectory = async () => {
 
 export const getHistoryItems = async () => {
   try {
-    const files = await getHistoryDirectory();
-    const historyItems = files
-      ?.filter((file) => file.name?.endsWith(".json"))
-      .map(async (file) => {
-        const json = await readTextFile(`history/${file.name}`, {
-          dir: BaseDirectory.AppData,
-        });
+    let files = await getHistoryDirectory();
+    files = files?.filter((file) => file.name?.endsWith(".json"));
 
-        return {
-          id: file.name?.replace(".json", ""),
-          bobbles: JSON.parse(json).bobbles,
-        };
+    const historyItems: IHistoryItem[] = [];
+
+    if (!files) return historyItems;
+
+    for (const file of files) {
+      const name = file.name?.replace(".json", "") as string;
+      const content = (await readTextFile(`history/${name}.json`, {
+        dir: BaseDirectory.AppData,
+      })) as string;
+
+      historyItems.push({
+        id: name,
+        bobbles: JSON.parse(content).bobbles as IBobble[],
       });
+    }
 
     return historyItems;
   } catch (e) {

@@ -26,7 +26,6 @@
         "readFile": true,
         "writeFile": true,
         "createDir": true,
-        "exists": true,
         "scope": ["$APPDATA/history", "$APPDATA/history/*"]
       },
       "path": {

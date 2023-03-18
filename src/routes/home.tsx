@@ -3,7 +3,12 @@ import scn from "scn";
 import { createSignal, lazy } from "solid-js";
 import Bobble from "../components/Bobble";
 import { getChatGPTReply, onStreamEvent } from "../openai";
-import { EStorageKey, getStoredValue, saveHistoryItem } from "../storage";
+import {
+  EStorageKey,
+  getHistoryItems,
+  getStoredValue,
+  saveHistoryItem,
+} from "../storage";
 import {
   hideWindow,
   onSetupShortcut,
@@ -12,8 +17,17 @@ import {
   exportChat,
   registerShortcut,
 } from "../tauri";
-import { EBobbleType, IBobble } from "../types";
-import { appendToArr, changeAtIndex, newAssistantBobble } from "../utils";
+import { EBobbleType, ESpells, IBobble, IHistoryItem } from "../types";
+import {
+  appendToArr,
+  changeAtIndex,
+  getSpellType,
+  isSpell,
+  newAssistantBobble,
+  removeSpellBobbles,
+} from "../utils";
+import History from "../components/History";
+
 const UserInput = lazy(() => import("../components/UserInput"));
 
 interface IHomeRouteProps {
@@ -27,7 +41,7 @@ const HomeRoute = (props: IHomeRouteProps) => {
   const shortcutTested = getStoredValue(EStorageKey.IsShortcutTested);
   const apiKey = getStoredValue(EStorageKey.OpenAIKey);
   const [shortcut] = createSignal(getStoredValue(EStorageKey.Shortcut, ""));
-  let chatId = Date.now();
+  let chatId = `${Date.now()}`;
 
   if (!apiKey) {
     navigate("/openai");
@@ -63,6 +77,11 @@ const HomeRoute = (props: IHomeRouteProps) => {
     navigate("/shortcut");
   });
 
+  const onHistoryItemSelect = (item: IHistoryItem) => {
+    chatId = `${item.id}`;
+    setBobbles(() => item.bobbles);
+  };
+
   const onUserInputSubmit = async (value: string) => {
     setBobbles((bobbles) =>
       appendToArr(
@@ -74,6 +93,30 @@ const HomeRoute = (props: IHomeRouteProps) => {
         newAssistantBobble()
       )
     );
+
+    if (isSpell(value)) {
+      const { spell, payload } = getSpellType(value);
+
+      switch (spell) {
+        case ESpells.History:
+          const historyItems = await getHistoryItems();
+
+          if (historyItems)
+            setBobbles((bobbles) =>
+              appendToArr(bobbles, {
+                role: EBobbleType.Spell,
+                content: (
+                  <History
+                    items={historyItems}
+                    onItemSelect={onHistoryItemSelect}
+                  />
+                ),
+              })
+            );
+      }
+
+      return;
+    }
 
     await getChatGPTReply(bobbles(), getStoredValue(EStorageKey.OpenAIKey));
   };

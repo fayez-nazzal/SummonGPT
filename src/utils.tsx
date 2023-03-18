@@ -1,5 +1,6 @@
-import { EBobbleType, IBobble } from "./types";
+import { EBobbleType, ESpells, IBobble } from "./types";
 import { BsMagic } from "solid-icons/bs";
+import { getHistoryItems } from "./storage";
 
 export const appendToArr = <T,>(arr: T[], ...item: T[]) => [...arr, ...item];
 
@@ -17,6 +18,32 @@ export const changeAtIndex = <T,>(
   newArr[index] = callback(newArr[index]);
   return newArr;
 };
+
+export const isSpell = (input: string) => input.startsWith("~");
+
+export const getSpellType = (input: string) => {
+  input = input.slice(1);
+
+  const spells = Object.values(ESpells);
+
+  for (const spell of spells) {
+    if (input.startsWith(spell)) {
+      return {
+        spell: spell as ESpells,
+        payload: input.slice(spell.length).trim(),
+      };
+    }
+  }
+
+  return { spell: ESpells.None, payload: "" };
+};
+
+export const removeSpellBobbles = (bobbles: IBobble[]) =>
+  bobbles.filter(
+    (bobble) =>
+      bobble.role !== EBobbleType.Spell &&
+      (typeof bobble.content !== "string" || !isSpell(bobble.content))
+  );
 
 export const getIconForBobbleType = (type: EBobbleType) =>
   type === EBobbleType.User

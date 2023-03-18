@@ -21,6 +21,6 @@ export enum ESpells {
   History = "history",
   Export = "export",
   Avatar = "avatar",
-  GptAvatar = "gpt-avatar",
+  ClearHistory = "clear-history",
   None = "none",
 }

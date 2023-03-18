@@ -1,4 +1,5 @@
 import scn from "scn";
+import { getFileSrc } from "../tauri";
 import { EBobbleType } from "../types";
 import { getIconForBobbleType } from "../utils";
 
@@ -10,9 +11,13 @@ export interface IAvatarProps {
 export const Avatar = (props: IAvatarProps) => {
   let Icon = getIconForBobbleType(props.role);
 
-  if (props.customImage) {
-    console.log(props.customImage);
-    Icon = () => <img src={props.customImage} class="w-full h-full" />;
+  if (props.customImage !== undefined) {
+    Icon = () => (
+      <img
+        src={getFileSrc(props.customImage as string)}
+        class="w-full h-full"
+      />
+    );
   }
 
   return (

@@ -4,6 +4,7 @@ import {
   readDir,
   writeTextFile,
   readTextFile,
+  removeFile,
 } from "@tauri-apps/api/fs";
 import { IBobble, IHistoryItem } from "./types";
 
@@ -73,6 +74,24 @@ export const getHistoryItems = async () => {
     }
 
     return historyItems;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const clearHistory = async () => {
+  try {
+    const files = await getHistoryDirectory();
+
+    if (!files) return;
+
+    for (const file of files) {
+      await removeFile(`history/${file.name as string}`, {
+        dir: BaseDirectory.AppData,
+      });
+    }
+
+    return;
   } catch (e) {
     console.error(e);
   }

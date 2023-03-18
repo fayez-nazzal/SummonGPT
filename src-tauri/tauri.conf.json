@@ -25,6 +25,7 @@
       "fs": {
         "readDir": true,
         "readFile": true,
+        "removeFile": true,
         "writeFile": true,
         "createDir": true,
         "copyFile": true,

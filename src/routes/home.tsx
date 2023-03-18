@@ -4,6 +4,7 @@ import { createSignal, lazy } from "solid-js";
 import Bobble from "../components/Bobble";
 import { getChatGPTReply, onStreamEvent } from "../openai";
 import {
+  clearHistory,
   EStorageKey,
   getHistoryItems,
   getStoredValue,
@@ -119,6 +120,10 @@ const HomeRoute = (props: IHomeRouteProps) => {
               })
             );
           break;
+        case ESpells.ClearHistory:
+          await clearHistory();
+          setBobbles(() => []);
+          break;
         case ESpells.Export:
           await onSave();
           break;
@@ -170,7 +175,9 @@ const HomeRoute = (props: IHomeRouteProps) => {
           <Bobble
             bobble={bobble}
             customImage={
-              bobble.role === EBobbleType.User ? avatarPath() : undefined
+              bobble.role === EBobbleType.User
+                ? (avatarPath() as string)
+                : undefined
             }
           />
         ))}

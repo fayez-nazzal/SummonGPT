@@ -102,8 +102,14 @@ export const chooseAvatarImage = async () => {
 
   if (!fileName) return;
 
-  await copyFile(filePath, `${dataPath}/${fileName}`);
+  let destinationPath = `${dataPath}/${fileName}`;
 
+  await copyFile(filePath, destinationPath);
+
+  return destinationPath;
+};
+
+export const getFileSrc = (filePath: string) => {
   return convertFileSrc(filePath);
 };
 

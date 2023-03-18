@@ -3,7 +3,7 @@ import scn from "scn";
 import { createSignal, lazy } from "solid-js";
 import Bobble from "../components/Bobble";
 import { getChatGPTReply, onStreamEvent } from "../openai";
-import { EStorageKey, getStoredValue } from "../storage";
+import { EStorageKey, getStoredValue, saveHistoryItem } from "../storage";
 import {
   hideWindow,
   onSetupShortcut,
@@ -27,6 +27,7 @@ const HomeRoute = (props: IHomeRouteProps) => {
   const shortcutTested = getStoredValue(EStorageKey.IsShortcutTested);
   const apiKey = getStoredValue(EStorageKey.OpenAIKey);
   const [shortcut] = createSignal(getStoredValue(EStorageKey.Shortcut, ""));
+  let chatId = Date.now();
 
   if (!apiKey) {
     navigate("/openai");
@@ -80,14 +81,14 @@ const HomeRoute = (props: IHomeRouteProps) => {
   onStreamEvent(({ payload }) => {
     const { bobble_index, content } = payload;
 
-    setBobbles(
-      (bobbles) =>
-        bobbles[bobble_index] &&
-        changeAtIndex(bobbles, bobble_index, (bobble) => ({
-          ...bobble,
-          content: bobble.content + content,
-        }))
+    setBobbles((bobbles) =>
+      changeAtIndex(bobbles, bobble_index, (bobble) => ({
+        ...bobble,
+        content: bobble.content + content,
+      }))
     );
+
+    saveHistoryItem(bobbles(), `${chatId}`);
   });
 
   const onSave = async () => {

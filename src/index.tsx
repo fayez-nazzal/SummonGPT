@@ -6,10 +6,13 @@ import "./et-book.css";
 import App from "./App";
 import { hashIntegration, Router } from "@solidjs/router";
 import { setAppTheme } from "./tauri";
+import { createHistoryDirectory } from "./storage";
 
 setAppTheme();
+createHistoryDirectory();
 
-document.addEventListener("contextmenu", (e) => e.preventDefault());
+if (process.env.NODE_ENV === "production")
+  document.addEventListener("contextmenu", (e) => e.preventDefault());
 
 render(
   () => (

@@ -22,7 +22,15 @@
         "save": true
       },
       "fs": {
-        "writeFile": true
+        "readDir": true,
+        "readFile": true,
+        "writeFile": true,
+        "createDir": true,
+        "exists": true,
+        "scope": ["$APPDATA/history", "$APPDATA/history/*"]
+      },
+      "path": {
+        "all": true
       },
       "clipboard": {
         "writeText": true

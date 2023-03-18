@@ -6,13 +6,23 @@ Summon the power of ChatGPT with a magical keyboard shortcut, just like a true s
 - Call ChatGPT at any moment throughout your mystical journey!
 - Auto light/dark theme that aligns with your system's aura :D
 
+<br />
+
 ![SummonGPT App Show](readme_images/summongpt.webp)
+
+<br />
 
 ![Requirements](readme_images/requirements.png)
 
+<br />
+
 - You will be prompted to enter an API Key for the OpenAI API, in order to obtain API keys, request access to [OpenAI API](https://openai.com/api/) and follow OpenAI's instructions [here](https://platform.openai.com/account/api-keys).
 
+<br />
+
 ![SpellBook (Usage)](readme_images/spellbook.png)
+
+<br />
 
 - Once you summon the chat, you can start typing your prompts, press enter to send, and the response from OpenAI will stream down.
 - If you type a prompt that begins with the ~ character, it will be considered a spell!
@@ -24,8 +34,18 @@ Summon the power of ChatGPT with a magical keyboard shortcut, just like a true s
     | ~avatar        | Changes your user avatar. |
     | ~export        | Exports your current chat as JSON. |
 
+<br />
 
-### Requirements for building from source
+![Installation](readme_images/installation.png)
+
+<br />
+
+<br />
+
+![Building from source](readme_images/building.png)
+<br />
+First make sure you have the following requirements:
+
 - [Rust](https://www.rust-lang.org/)
 - [Node.js](https://nodejs.org/en/)
 - For macOS users, make sure you have Clang and macOS dev tools:
@@ -47,30 +67,27 @@ sudo apt update
 sudo apt install libwebkit2gtk-4.0-dev build-essential curl wget libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev
  ```
 
-![Installation](readme_images/installation.png)
-Please build from source :D
-
-![Building from source](readme_images/building.png)
-
 1. Clone this repo in a directory of your choice:
 ```console
   git clone https://github.com/fayez-nazzal/SummonGPT/edit/master SummonGPT
 ```
 
-1. Enter the cloned directory:
+2. Enter the cloned directory:
 ```console
   cd SummonGPT
 ```
 
-1. Run the following commands to start the build process:
+3. Run the following commands to start the build process:
 ```console
 npm i -g pnpm
 pnpm install
 pnpm tauri build
 ```
 
-1. You will find resulting binaries in `SummonGPT/src-tauri/target/release`.
+4. You will find resulting binaries in `SummonGPT/src-tauri/target/release`.
+
+<br />
 
 ![Techs used](readme_images/techs.png)
 
-This project is done by using the power of the awesome [Tauri Toolkit](https://tauri.app/). Written using [SolidJS](https://www.solidjs.com/) & [Rust](https://www.rust-lang.org/) .
+This enchanted creation is done by using the power of the marvelous [Tauri Toolkit](https://tauri.app/). Crafted with the arcane arts of [SolidJS](https://www.solidjs.com/) & [Rust](https://www.rust-lang.org/) .

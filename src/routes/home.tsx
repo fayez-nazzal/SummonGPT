@@ -113,6 +113,9 @@ const HomeRoute = (props: IHomeRouteProps) => {
                 ),
               })
             );
+        case ESpells.Export:
+          await onSave();
+          break;
       }
 
       return;

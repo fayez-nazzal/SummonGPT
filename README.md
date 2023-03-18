@@ -12,7 +12,7 @@ Summon the power of ChatGPT with a magical keyboard shortcut, just like a true s
 
 <br />
 
-![Requirements](readme_images/requirements.png)
+<img style="width:600px;height: auto;" src="readme_images/requirements.png" alt="Requirements" />
 
 <br />
 
@@ -20,15 +20,15 @@ Summon the power of ChatGPT with a magical keyboard shortcut, just like a true s
 
 <br />
 
-![SpellBook (Usage)](readme_images/spellbook.png)
+<img style="width:600px;height: auto;" src="readme_images/spellbook.png" alt="Usage (SpellBook)" />
 
 <br />
 
 - Once you summon the chat, you can start typing your prompts, press enter to send, and the response from OpenAI will stream down.
 - If you type a prompt that begins with the ~ character, it will be considered a spell!
 - Spells don't go straight to OpenAI. instead, they perform special actions:
-    | Spell | Action |
-    |--------------|-----------|
+    | Spell          | Action |
+    |----------------|-----------|
     | ~history       | Displays your previous chats. You can click on any chat to switch context. |
     | ~clear-history | Clears all your chat history. |
     | ~avatar        | Changes your user avatar. |
@@ -36,13 +36,14 @@ Summon the power of ChatGPT with a magical keyboard shortcut, just like a true s
 
 <br />
 
-![Installation](readme_images/installation.png)
+<img style="width:600px;height: auto;" src="readme_images/installation.png" alt="Usage (SpellBook)" />
 
 <br />
 
 <br />
 
-![Building from source](readme_images/building.png)
+<img style="width:600px;height: auto;" src="readme_images/building.png" alt="Building from source" />
+
 <br />
 First make sure you have the following requirements:
 
@@ -88,6 +89,6 @@ pnpm tauri build
 
 <br />
 
-![Techs used](readme_images/techs.png)
+<img style="width:600px;height: auto;" src="readme_images/techs.png" alt="Technologies used" />
 
 This enchanted creation is done by using the power of the marvelous [Tauri Toolkit](https://tauri.app/). Crafted with the arcane arts of [SolidJS](https://www.solidjs.com/) & [Rust](https://www.rust-lang.org/) .

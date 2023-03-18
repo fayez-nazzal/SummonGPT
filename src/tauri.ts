@@ -1,9 +1,11 @@
 import { clipboard, invoke } from "@tauri-apps/api";
 import { appWindow } from "@tauri-apps/api/window";
 import { listen } from "@tauri-apps/api/event";
-import { save } from "@tauri-apps/api/dialog";
-import { writeTextFile } from "@tauri-apps/api/fs";
+import { save, open } from "@tauri-apps/api/dialog";
+import { writeTextFile, copyFile } from "@tauri-apps/api/fs";
+import { appDataDir } from "@tauri-apps/api/path";
 import { IBobble } from "./types";
+import { convertFileSrc } from "@tauri-apps/api/tauri";
 
 export const hideWindow = async () => {
   await invoke("hide_window");
@@ -79,6 +81,36 @@ export const exportChat = async (bobbles: IBobble[]) => {
   });
 
   filePath && (await writeTextFile(filePath, JSON.stringify(bobbles)));
+};
+
+export const chooseAvatarImage = async () => {
+  const filePath = await open({
+    title: "Choose avatar image",
+    filters: [
+      {
+        name: "Images",
+        extensions: ["png", "jpg", "jpeg"],
+      },
+    ],
+  });
+
+  if (!filePath || typeof filePath !== "string") return;
+
+  const dataPath = await appDataDir();
+
+  const fileName = filePath.split("/").pop();
+
+  if (!fileName) return;
+
+  let destinationPath = `${dataPath}/${fileName}`;
+
+  await copyFile(filePath, destinationPath);
+
+  return destinationPath;
+};
+
+export const getFileSrc = (filePath: string) => {
+  return convertFileSrc(filePath);
 };
 
 export const copyToClipboard = async (text: string) => {

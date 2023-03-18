@@ -1,12 +1,11 @@
 import { invoke } from "@tauri-apps/api";
 import { listen } from "@tauri-apps/api/event";
 import { IBobble } from "./types";
+import { removeSpellBobbles } from "./utils";
 
 export const getChatGPTReply = async (bobbles: IBobble[], apiKey: string) => {
-  console.log(bobbles);
-
   invoke("stream_chat", {
-    bobbles,
+    bobbles: removeSpellBobbles(bobbles),
     bobbleIndex: bobbles.length - 1,
     apiKey: apiKey,
   });

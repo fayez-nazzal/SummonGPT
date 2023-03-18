@@ -1,12 +1,13 @@
 import { EBobbleType, IBobble } from "../types";
 import scn from "scn";
 import { createEffect, createSignal } from "solid-js";
-import { getIconForBobbleType } from "../utils";
 import { FaSolidCopy, FaSolidClipboardCheck } from "solid-icons/fa";
 import { copyToClipboard } from "../tauri";
+import { Avatar } from "./Avatar";
 
 interface IBobbleProps {
   bobble: IBobble;
+  customImage?: string;
 }
 
 const Bobble = (props: IBobbleProps) => {
@@ -18,9 +19,9 @@ const Bobble = (props: IBobbleProps) => {
     }
   });
 
-  const Icon = getIconForBobbleType(props.bobble.role);
-
   const onCopy = () => {
+    if (typeof props.bobble.content !== "string") return;
+
     setIsCopied(true);
     copyToClipboard(props.bobble.content);
 
@@ -50,7 +51,11 @@ const Bobble = (props: IBobbleProps) => {
       <button
         class={scn(
           "mr-auto ml-1",
-          ["hidden", props.bobble.role !== EBobbleType.Assistant],
+          [
+            "hidden",
+            props.bobble.role !== EBobbleType.Assistant ||
+              typeof props.bobble.content !== "string",
+          ],
           ["text-melt hover:text-primary", !isCopied()],
           ["text-success", isCopied()]
         )}
@@ -76,15 +81,7 @@ const Bobble = (props: IBobbleProps) => {
       >
         {props.bobble.content}
       </div>
-      <div
-        class={scn(
-          "flex justify-center items-center rounded-lg w-8 h-8 text-textPrimary-dark dark:text-textPrimary-light",
-          ["bg-textPrimary", props.bobble.role === EBobbleType.User],
-          "mt-0.5"
-        )}
-      >
-        <Icon />
-      </div>
+      <Avatar customImage={props.customImage} role={props.bobble.role} />
     </div>
   );
 };

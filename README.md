@@ -1,18 +1,54 @@
-# SummonGPT
+![Logo](readme_images/logo.png)
 
-Summon ChatGPT using a keyboard shortcut, just like a sorcerer!
+Summon the power of ChatGPT with a magical keyboard shortcut, just like a true sorcerer!
 
-- Setup a keyboard shortcut.
-- Call ChatGPT right away at any time throughout the day!
-- Auto light/dark theme that matches your system preferences :D
+- Set up an enchanting keyboard shortcut.
+- Call ChatGPT at any moment throughout your mystical journey!
+- Auto light/dark theme that aligns with your system's aura :D
 
-![SummonGPT App Show](summongpt.webp)
+<br />
 
-## Requirements 
+![SummonGPT App Show](readme_images/summongpt.webp)
+
+<br />
+
+<img style="width:600px;height: auto;" src="readme_images/requirements.png" alt="Requirements" />
+
+<br />
 
 - You will be prompted to enter an API Key for the OpenAI API, in order to obtain API keys, request access to [OpenAI API](https://openai.com/api/) and follow OpenAI's instructions [here](https://platform.openai.com/account/api-keys).
 
-### Requirements for building from source
+<br />
+
+<img style="width:600px;height: auto;" src="readme_images/spellbook.png" alt="Usage (SpellBook)" />
+
+<br />
+
+- Once you summon the chat, you can start typing your prompts, press enter to send, and the response from OpenAI will stream down.
+- If you type a prompt that begins with the ~ character, it will be considered a spell!
+- Spells don't go straight to OpenAI. instead, they perform special actions:
+    | Spell          | Action |
+    |----------------|-----------|
+    | ~history       | Displays your previous chats. You can click on any chat to switch context. |
+    | ~clear-history | Clears all your chat history. |
+    | ~avatar        | Changes your user avatar. |
+    | ~export        | Exports your current chat as JSON. |
+
+<br />
+
+<img style="width:600px;height: auto;" src="readme_images/installation.png" alt="Installation" />
+
+<br />
+
+An installer is not currently available, please consider building from source :D
+
+<br />
+
+<img style="width:600px;height: auto;" src="readme_images/building.png" alt="Building from source" />
+
+<br />
+First make sure you have the following requirements:
+
 - [Rust](https://www.rust-lang.org/)
 - [Node.js](https://nodejs.org/en/)
 - For macOS users, make sure you have Clang and macOS dev tools:
@@ -34,13 +70,6 @@ sudo apt update
 sudo apt install libwebkit2gtk-4.0-dev build-essential curl wget libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev
  ```
 
-## Installation
-Please build from source :D
-
-## Building From Source
-
-### Building
-
 1. Clone this repo in a directory of your choice:
 ```console
   git clone https://github.com/fayez-nazzal/SummonGPT/edit/master SummonGPT
@@ -60,5 +89,8 @@ pnpm tauri build
 
 4. You will find resulting binaries in `SummonGPT/src-tauri/target/release`.
 
-## Techs used
-This project is done by using the power of the awesome [Tauri Toolkit](https://tauri.app/). Written using [SolidJS](https://www.solidjs.com/) & [Rust](https://www.rust-lang.org/) .
+<br />
+
+<img style="width:600px;height: auto;" src="readme_images/techs.png" alt="Technologies used" />
+
+This enchanted creation is done by using the power of the marvelous [Tauri Toolkit](https://tauri.app/). Crafted with the arcane arts of [SolidJS](https://www.solidjs.com/) & [Rust](https://www.rust-lang.org/) .

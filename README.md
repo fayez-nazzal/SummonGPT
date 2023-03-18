@@ -36,9 +36,11 @@ Summon the power of ChatGPT with a magical keyboard shortcut, just like a true s
 
 <br />
 
-<img style="width:600px;height: auto;" src="readme_images/installation.png" alt="Usage (SpellBook)" />
+<img style="width:600px;height: auto;" src="readme_images/installation.png" alt="Installation" />
 
 <br />
+
+An installer is not currently available, please consider building from source :D
 
 <br />
 

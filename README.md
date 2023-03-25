@@ -27,6 +27,7 @@ Summon the power of ChatGPT with a magical keyboard shortcut, just like a true s
 - Once you summon the chat, you can start typing your prompts, press enter to send, and the response from OpenAI will stream down.
 - If you type a prompt that begins with the ~ character, it will be considered a spell!
 - Spells don't go straight to OpenAI. instead, they perform special actions:
+
     | Spell          | Action |
     |----------------|-----------|
     | ~history       | Displays your previous chats. You can click on any chat to switch context. |
@@ -70,6 +71,8 @@ sudo apt update
 sudo apt install libwebkit2gtk-4.0-dev build-essential curl wget libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev
  ```
 
+Now to start  the process of building from source, follow those steps:
+
 1. Clone this repo in a directory of your choice:
 ```console
   git clone https://github.com/fayez-nazzal/SummonGPT/edit/master SummonGPT
@@ -87,7 +90,7 @@ pnpm install
 pnpm tauri build
 ```
 
-4. You will find resulting binaries in `SummonGPT/src-tauri/target/release`.
+4. You will find resulting binaries in `SummonGPT/src-tauri/target/release/bundle`.
 
 <br />
 

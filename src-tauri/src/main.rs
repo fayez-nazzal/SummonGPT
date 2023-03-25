@@ -40,7 +40,8 @@ enum Event {
     Shortcut,
     SetupShortcut,
     WindowHide,
-    Stream
+    Stream,
+    ClearSettings
 }
 
 impl Event {
@@ -49,7 +50,8 @@ impl Event {
             Event::Shortcut => "shortcut".to_string(),
             Event::SetupShortcut => "setup_shortcut".to_string(),
             Event::WindowHide => "window_hide".to_string(),
-            Event::Stream => "stream".to_string()
+            Event::Stream => "stream".to_string(),
+            Event::ClearSettings => "clear_settings".to_string(),
         }
     }
 }

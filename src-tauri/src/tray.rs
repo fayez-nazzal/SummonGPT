@@ -5,6 +5,7 @@ enum MenuItems {
     Show = 0,
     Exit = 1,
     SetupShortcut = 2,
+    ClearSettings = 3,
 }
 
 impl MenuItems {
@@ -13,6 +14,7 @@ impl MenuItems {
             MenuItems::Show => "SummonGPT".to_string(),
             MenuItems::SetupShortcut => "Setup Shortcut".to_string(),
             MenuItems::Exit => "Exit".to_string(),
+            MenuItems::ClearSettings => "Clear Settings".to_string(),
         }
     }
 }
@@ -20,9 +22,10 @@ impl MenuItems {
 pub fn init_system_tray() -> SystemTray {
     let show = CustomMenuItem::new(MenuItems::Show.title(), MenuItems::Show.title());
     let setup_shortcut = CustomMenuItem::new(MenuItems::SetupShortcut.title(), MenuItems::SetupShortcut.title());
+    let clear_settings = CustomMenuItem::new(MenuItems::ClearSettings.title(), MenuItems::ClearSettings.title());
     let quit = CustomMenuItem::new(MenuItems::Exit.title(), MenuItems::Exit.title());
 
-    let tray_menu = SystemTrayMenu::new().add_item(show).add_item(setup_shortcut).add_item(quit);
+    let tray_menu = SystemTrayMenu::new().add_item(show).add_item(setup_shortcut).add_item(clear_settings).add_item(quit);
 
     let tray = SystemTray::new().with_menu(tray_menu);
 
@@ -52,6 +55,10 @@ pub fn on_system_tray_event (app: &AppHandle, event: SystemTrayEvent) {
             if id == MenuItems::SetupShortcut.title() {
                 on_shortcut(app.clone());
                 emit_event(Event::SetupShortcut, app);
+            }
+
+            if id == MenuItems::ClearSettings.title() {
+                emit_event(Event::ClearSettings, app);
             }
         },
         _ => {}

@@ -42,6 +42,10 @@ export const onShortcut = async (callback: () => void) => {
   });
 };
 
+export const onClearSettings = async (callback: () => void) => {
+  listen("clear_settings", callback);
+};
+
 export const onSetupShortcut = async (callback: () => void) => {
   listen("setup_shortcut", callback);
 };

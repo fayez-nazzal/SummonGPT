@@ -19,6 +19,7 @@ import {
   exportChat,
   registerShortcut,
   chooseAvatarImage,
+  onClearSettings,
 } from "../tauri";
 import { EBobbleType, ESpells, IBobble, IHistoryItem } from "../types";
 import {
@@ -81,6 +82,11 @@ const HomeRoute = (props: IHomeRouteProps) => {
   onSetupShortcut(() => {
     localStorage.removeItem("shortcut");
     navigate("/shortcut");
+  });
+
+  onClearSettings(() => {
+    localStorage.clear();
+    navigate("/openai");
   });
 
   const onHistoryItemSelect = (item: IHistoryItem) => {
